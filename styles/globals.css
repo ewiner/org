@@ -2,3 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
+.mt-3-plus-border-2 {
+    margin-top: calc(theme('spacing.3') + theme('borderWidth.2'))
+}

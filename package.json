@@ -12,6 +12,7 @@
     "autoprefixer": "^10.2.4",
     "got": "^11.8.1",
     "gsx2json": "github:55sketch/gsx2json",
+    "lodash": "^4.17.20",
     "next": "10.0.6",
     "postcss": "^8.2.5",
     "react": "17.0.1",
