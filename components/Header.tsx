@@ -3,7 +3,8 @@ import { Transition } from '@headlessui/react'
 import Link from 'next/link'
 
 type Props = {
-    currentUrl: string
+    currentUrl: string,
+    sheetId: number
 }
 
 const links = [
@@ -11,9 +12,9 @@ const links = [
     {url: "program", text: "Program View"}
 ]
 
-const versions = ["Marcus 2020-02-04", "Active 2020-01-30"]
+const versions = ["Eric's Testbed", "Marcus 2020-02-04", "Active 2020-01-30"]
 
-export default function Header({currentUrl}: Props) {
+export default function Header({currentUrl, sheetId}: Props) {
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
     const [draftMenuOpen, setDraftMenuOpen] = useState(false);
 
@@ -43,7 +44,7 @@ export default function Header({currentUrl}: Props) {
                             <div className="hidden sm:block sm:ml-6">
                                 <div className="flex space-x-4">
                                     {links.map(link => (
-                                        <Link key={link.url} href={link.url}>
+                                        <Link key={link.url} href={`/${sheetId}/${link.url}`}>
                                             <a className={`${link.url === currentUrl ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"} px-3 py-2 rounded-md text-sm font-medium`}>
                                                 {link.text}
                                             </a>
@@ -57,7 +58,9 @@ export default function Header({currentUrl}: Props) {
                                 <div>
                                     <button onClick={() => setDraftMenuOpen(!draftMenuOpen)} className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu" aria-haspopup="true">
                                         <span className="sr-only">Open drafts menu</span>
-                                        <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-1 border-2 rounded-md text-sm font-medium">Version: <span className="font-bold">Eric's Testbed</span></a>
+                                        <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-1 border-2 rounded-md text-sm font-medium">Version: <span className="font-bold">
+                                            {versions[sheetId - 1]}
+                                        </span></a>
                                     </button>
                                 </div>
                                 <Transition
@@ -70,8 +73,14 @@ export default function Header({currentUrl}: Props) {
                                     leaveTo="transform opacity-0 scale-95"
                                 >
                                     <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                                        {versions.map(version => (
-                                            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">{version}</a>                                             
+                                        {versions.map((version, idx) => (
+                                            sheetId === idx + 1
+                                                ? <span key={idx}/>
+                                                : <Link key={idx} href={`/${idx + 1}/${currentUrl}`}>
+                                                    <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                                        {version}
+                                                    </a>
+                                                  </Link>
                                         ))}
                                         <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
                                             <svg className="w-3 h-3 inline mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"/></svg>
@@ -87,7 +96,7 @@ export default function Header({currentUrl}: Props) {
                 <div className={`${mobileNavOpen ? "block" : "hidden"} sm:hidden`}>
                     <div className="px-2 pt-2 pb-3 space-y-1">
                         {links.map(link => (
-                            <Link key={link.url} href={link.url}>
+                            <Link key={link.url} href={`/${sheetId}/${link.url}`}>
                                 <a className={`${link.url === currentUrl ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"} block px-3 py-2 rounded-md text-base font-medium`}>
                                     {link.text}
                                 </a>
