@@ -1,8 +1,9 @@
 import {GetStaticProps} from 'next'
-import fetchGsheet from "../src/api/fetchGsheet";
+import fetchGsheet from "../src/api/fetchGsheet"
+import {Hierarchy, LeadPosition, Person, Role} from "../src/types";
+import PersonView from "../components/PersonView";
+import Header from "../components/Header";
 
-type Role = "Mobile" | "Backend" | "Frontend" | "QA" | "Product" | "TPM" | "UI" | "UX"
-type LeadPosition = "Program Tech Lead" | "Subprogram Tech Lead" | "Subprogram/Role Tech Lead" | "Product Lead"
 type RawPerson = {
     person: string,
     role: "" | Role,
@@ -12,21 +13,8 @@ type RawPerson = {
     lead: "" | LeadPosition
 }
 
-type Person = {
-    name: string,
-    role: "" | Role,
-    program: string,
-    subprogram: string,
-    manager: string,
-    lead: "" | LeadPosition
-}
-
 type Props = {
     people: Person[]
-}
-
-type Hierarchy<P> = P & {
-    members: Hierarchy<P>[]
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
@@ -41,18 +29,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     }
 }
 
-function Card(person: Hierarchy<Person>) {
-    return (
-        <li>
-            {person.name}
-            <ul>
-                {person.members.map(child => <Card key={child.name} {...child}/>)}
-            </ul>
-        </li>
-    )
-}
-
-export default function Management(props: Props) {
+export default function ManagementView(props: Props) {
     const {people} = props
 
     const membersOf: { [person: string]: Person[] } = people.reduce((acc, person) => ({
@@ -68,13 +45,16 @@ export default function Management(props: Props) {
         return {...person, members: membersOf[person.name].map(child => makeMembers(child))}
     }
 
-    const data: Hierarchy<Person>[] = membersOf[""].map(makeMembers)
+    const data = membersOf[""].map(makeMembers)
 
     return (
-        <ul>
-            {data.map(person => (
-                <Card key={person.name} {...person} />
-            ))}
-        </ul>
+        <>
+            <Header currentUrl="management" />
+            <div className="flex">
+                {data.map(person => (
+                    <PersonView key={person.name} {...person} />
+                ))}
+            </div>
+        </>
     )
 }
