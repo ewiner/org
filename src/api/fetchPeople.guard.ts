@@ -10,6 +10,7 @@ export function isRawPerson(obj: any, _argumentName?: string): obj is RawPerson 
             typeof obj === "object" ||
             typeof obj === "function") &&
         typeof obj.person === "string" &&
+        typeof obj.managertitle === "string" &&
         (obj.role === "" ||
             obj.role === "Mobile" ||
             obj.role === "Backend" ||
@@ -22,10 +23,10 @@ export function isRawPerson(obj: any, _argumentName?: string): obj is RawPerson 
         typeof obj.program === "string" &&
         typeof obj.subprogram === "string" &&
         typeof obj.manager === "string" &&
-        (obj.lead === "" ||
-            obj.lead === "Program Tech Lead" ||
-            obj.lead === "Subprogram Tech Lead" ||
-            obj.lead === "Subprogram/Role Tech Lead" ||
-            obj.lead === "Product Lead")
+        (obj.teamleadrole === "" ||
+            obj.teamleadrole === "Program Tech Lead" ||
+            obj.teamleadrole === "Subprogram Tech Lead" ||
+            obj.teamleadrole === "Subprogram/Role Tech Lead" ||
+            obj.teamleadrole === "Product Lead")
     )
 }

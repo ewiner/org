@@ -31,7 +31,7 @@ export default function Header({currentUrl, sheetId, version}: Props) {
             <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-800">
                 <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                     <div className="relative flex items-center justify-between h-16">
-                        <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                        <div className="inset-y-0 left-0 flex items-center sm:hidden">
                             <button onClick={() => setMobileNavOpen(!mobileNavOpen)}
                                     className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                                     aria-expanded="false">
@@ -50,7 +50,7 @@ export default function Header({currentUrl, sheetId, version}: Props) {
                                 </svg>
                             </button>
                         </div>
-                        <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                        <div className="flex-1 flex items-center sm:items-stretch sm:justify-start">
                             <div className="flex-shrink-0 flex items-center">
                                 <span
                                     className="text-gray-800 bg-gray-200 font-bold antialiased py-2 px-3 w-auto rounded-md">

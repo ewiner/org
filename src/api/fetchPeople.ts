@@ -5,11 +5,12 @@ import {isRawPerson} from "./fetchPeople.guard";
 /** @see {isRawPerson} ts-auto-guard:type-guard */
 export type RawPerson = {
     person: string,
+    managertitle: string,
     role: "" | Role,
     program: string,
     subprogram: string,
     manager: string,
-    lead: "" | LeadPosition
+    teamleadrole: "" | LeadPosition
 }
 
 type PeopleData = {

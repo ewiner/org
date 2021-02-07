@@ -3,11 +3,12 @@ export type LeadPosition = "Program Tech Lead" | "Subprogram Tech Lead" | "Subpr
 
 export type Person = {
     name: string,
+    managertitle: string,
     role: "" | Role,
     program: string,
     subprogram: string,
     manager: string,
-    lead: "" | LeadPosition
+    teamleadrole: "" | LeadPosition
 }
 
 export type Hierarchy<P> = P & {
