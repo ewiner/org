@@ -9,7 +9,7 @@ export default function ProgramView(props: Props) {
     const sheetId = parseInt(router.query.sheetId as string, 10)
     return (
         <>
-            <Header currentUrl="program" sheetId={sheetId} />
+            <Header currentUrl="program" sheetId={sheetId} version="(todo)" />
             (todo)
         </>
     )

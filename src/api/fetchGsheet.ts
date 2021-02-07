@@ -1,16 +1,27 @@
 import got from 'got'
 
-// Stripped down version of https://github.com/55sketch/gsx2json/blob/master/api.js
-export default async function fetchGsheet(sheetid) {
-    const gsheetId = process.env.DATA_GSHEET;
-    const url = `https://spreadsheets.google.com/feeds/list/${gsheetId}/${sheetid}/public/values?alt=json`;
+type SheetNotFound = { result: "sheet-not-found" }
+type Success = { result: "success", sheetName: string, rows: any[] }
 
-    const data = await got(url).json() as any
+type GsheetResponse = SheetNotFound | Success
+
+// Stripped down version of https://github.com/55sketch/gsx2json/blob/master/api.js
+export default async function fetchGsheet(sheetid: number): Promise<GsheetResponse> {
+    const gsheetId = process.env.DATA_GSHEET;
+    const url = `https://spreadsheets.google.com/feeds/list/${gsheetId}/${sheetid}/public/values?alt=json`
+
+    const response = await got(url, {throwHttpErrors: false})
+    if (response.statusCode == 400) {
+        return {result: "sheet-not-found"}
+    }
+
+    const data = JSON.parse(response.body)
 
     const rows = [];
     if (!(data && data.feed && data.feed.entry)) {
         throw new Error(`Couldn't parse response data: ${data}`)
     } else {
+        const sheetName = data.feed.title.$t
         for (let i = 0; i < data.feed.entry.length; i++) {
             const entry = data.feed.entry[i];
             const keys = Object.keys(entry);
@@ -26,6 +37,6 @@ export default async function fetchGsheet(sheetid) {
             }
             rows.push(newRow);
         }
-        return rows;
+        return {result: "success", sheetName, rows};
     }
 }

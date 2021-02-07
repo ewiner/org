@@ -6,14 +6,20 @@ import fetchPeople from "../../src/api/fetchPeople";
 import {useRouter} from "next/router";
 
 type Props = {
-    people: Person[]
+    people: Person[],
+    version: string
 }
 
 export const getStaticProps: GetStaticProps<Props> = async (context) => {
     const sheetId = parseInt(context.params.sheetId as string, 10)
     const data = await fetchPeople(sheetId)
+    if (data === null) {
+        return {
+            notFound: true
+        }
+    }
     return {
-        props: {people: data},
+        props: data,
         revalidate: 1
     }
 }
@@ -30,7 +36,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export default function ManagementView(props: Props) {
     const router = useRouter()
     const sheetId = parseInt(router.query.sheetId as string, 10)
-    const {people} = props
+    const {people, version} = props
 
     const membersOf: { [person: string]: Person[] } = people.reduce((acc, person) => ({
         ...acc,
@@ -49,7 +55,7 @@ export default function ManagementView(props: Props) {
 
     return (
         <>
-            <Header currentUrl="management" sheetId={sheetId}/>
+            <Header currentUrl="management" sheetId={sheetId} version={version}/>
             <div className="flex">
                 {data.map(person => (
                     <PersonView key={person.name} {...person} />
