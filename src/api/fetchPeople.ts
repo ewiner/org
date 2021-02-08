@@ -6,7 +6,7 @@ import {isRawPerson} from "./fetchPeople.guard";
 export type RawPerson = {
     person: string,
     managertitle: string,
-    role: "" | Role,
+    icrole: "" | Role,
     program: string,
     subprogram: string,
     manager: string,

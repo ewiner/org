@@ -56,11 +56,11 @@ export default function ManagementView(props: Props) {
     return (
         <>
             <Header currentUrl="management" sheetId={sheetId} version={version}/>
-            <div className="flex container p-4">
+            <div className="flex container p-4 text-gray-800">
                 {data.length === 0 ?
                     <p>No data found. Please double-check that the Google sheet has all the correct columns.</p> :
                     data.map(person => (
-                        <PersonView key={person.name} {...person} />
+                        <PersonView key={person.name} person={person} inline={false} />
                     ))
                 }
             </div>

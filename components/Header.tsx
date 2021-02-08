@@ -1,6 +1,8 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {Transition} from '@headlessui/react'
 import Link from 'next/link'
+import {mdiRefresh} from '@mdi/js'
+import Icon from "@mdi/react";
 
 type Props = {
     currentUrl: string,
@@ -53,7 +55,7 @@ export default function Header({currentUrl, sheetId, version}: Props) {
                         <div className="flex-1 flex items-center sm:items-stretch sm:justify-start">
                             <div className="flex-shrink-0 flex items-center">
                                 <span
-                                    className="text-gray-800 bg-gray-200 font-bold antialiased py-2 px-3 w-auto rounded-md">
+                                    className="text-gray-800 bg-gray-200 font-bold antialiased py-2 px-3 w-auto ">
                                     Org Charts
                                 </span>
                             </div>
@@ -110,11 +112,7 @@ export default function Header({currentUrl, sheetId, version}: Props) {
                                         <a onClick={onRefreshClick}
                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t-2"
                                            role="menuitem">
-                                            <svg className="w-3 h-3 inline mr-2" xmlns="http://www.w3.org/2000/svg"
-                                                 viewBox="0 0 24 24">
-                                                <path
-                                                    d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"/>
-                                            </svg>
+                                            <Icon path={mdiRefresh} title="Refresh" className="h-4 inline-block"/>{" "}
                                             Refresh list...
                                         </a>
                                     </div>
