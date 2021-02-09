@@ -1,0 +1,115 @@
+import tinycolor from 'tinycolor2'
+import React from "react";
+import {Role} from "../src/types";
+import Icon from "@mdi/react";
+import {
+    mdiCalendarArrowRight,
+    mdiCellphone, mdiFlash, mdiFormatTextWrappingOverflow,
+    mdiIframeBracesOutline,
+    mdiPackageVariant, mdiPencilRuler,
+    mdiTestTube,
+    mdiXml
+} from "@mdi/js";
+import CSS from 'csstype';
+
+type BadgeProps = {
+    title?: string,
+    hasBadgeAbove?: boolean,
+    hasBadgeLeft?: Boolean,
+    style?: CSS.Properties
+}
+
+const Badge: React.FunctionComponent<BadgeProps> = ({title, style, children, hasBadgeAbove = false, hasBadgeLeft = false}) => (
+    <div title={title} style={style}
+        className={`
+            ${hasBadgeAbove ? "border-t-0" : ""} 
+            ${hasBadgeLeft ? "border-l-0" : ""} 
+            inline-block h-6 w-6 py-1 font-bold text-center text-xs border border-gray-600 rounded-sm
+        `}>
+        {children}
+    </div>
+)
+
+type IconBadgeProps = BadgeProps & {
+    icon: string,
+}
+export function IconBadge({icon, title, ...badgeProps}: IconBadgeProps) {
+    return <Badge {...badgeProps}>
+        <Icon path={icon} className="h-4 inline-block"/>
+    </Badge>
+}
+
+// from https://colorbrewer2.org/#type=qualitative&scheme=Paired&n=12
+const PROGRAM_COLORS = ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928']
+const SUBPROGRAM_COLORS = ['#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5', '#d9d9d9', '#bc80bd', '#ccebc5', '#ffed6f', ...PROGRAM_COLORS]
+const PROGRAM_INITIALS_OVERRIDE = {
+    "Compliance": "CMP"
+}
+const SUBPROGRAM_INITIALS_OVERRIDE = {}
+
+function badgeMaker(colors: string[], overrides: { [key: string]: string }) {
+    const known = {}
+
+    return (props: BadgeProps & { value: string}) => {
+        const {value, ...badgeProps} = props
+        let initials = overrides[value]
+        if (initials === undefined) {
+            initials = value
+                .split(' ')
+                .map(word => word[0])
+                .filter(w => w !== "/")
+                .join('')
+                .toUpperCase()
+        }
+
+        let color = known[value]
+        if (color === undefined) {
+            color = colors[Object.keys(known).length % colors.length]
+            known[value] = color
+        }
+        const darker = tinycolor(color).darken(70).toHexString();
+        const lighter = tinycolor(color).lighten(70).toHexString();
+        const textcolor = tinycolor.mostReadable(color, [lighter, darker]).toHexString()
+        return (
+            <Badge hasBadgeAbove={true} title={value} style={{
+                backgroundColor: color,
+                color: textcolor,
+                borderColor: darker
+            }}>
+                {initials}
+            </Badge>
+        );
+    }
+}
+
+export const ProgramBadge = badgeMaker(PROGRAM_COLORS, PROGRAM_INITIALS_OVERRIDE)
+export const SubprogramBadge = badgeMaker(SUBPROGRAM_COLORS, SUBPROGRAM_INITIALS_OVERRIDE)
+
+type RoleIconProps = {
+    role: "" | Role,
+    [key: string]: unknown
+}
+
+export function RoleIcon({role, ...others}: RoleIconProps) {
+    const render = (svgPath) => <Icon title={role} path={svgPath} {...others} />
+    switch (role) {
+        case "Mobile":
+            return render(mdiCellphone)
+        case "Backend":
+            return render(mdiIframeBracesOutline)
+        case "Frontend":
+            return render(mdiXml)
+        case "QA":
+            return render(mdiTestTube)
+        case "Product":
+            return render(mdiPackageVariant)
+        case "TPM":
+            return render(mdiCalendarArrowRight)
+        case "UI":
+            return render(mdiPencilRuler)
+        case "UX":
+            return render(mdiFormatTextWrappingOverflow)
+        default:
+            return null
+    }
+}
