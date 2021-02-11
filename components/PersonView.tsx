@@ -1,19 +1,7 @@
 import React from "react";
 import MembersList from "./MembersList";
-import {Hierarchy, Person, Role} from "../src/types";
-import {
-    mdiCalendarArrowRight,
-    mdiCellphone,
-    mdiFlash,
-    mdiFormatTextWrappingOverflow,
-    mdiIframeBracesOutline,
-    mdiPackageVariant,
-    mdiPencilRuler,
-    mdiTestTube,
-    mdiXml
-} from '@mdi/js';
-import Icon from '@mdi/react'
-import tinycolor from 'tinycolor2'
+import {Hierarchy, Person} from "../src/types";
+import {mdiFlash} from '@mdi/js';
 import {IconBadge, ProgramBadge, RoleIcon, SubprogramBadge} from "./badges";
 
 type Props = {
@@ -43,19 +31,19 @@ export default function PersonView({person, inline}: Props) {
                         </div>
                         <div className="">
                             {program &&
-                            <p title={program} className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
-                              <ProgramBadge value={program}/> {program}
-                            </p>}
+                            <div title={program} className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
+                              <ProgramBadge value={program} /> {program}
+                            </div>}
                             {subprogram &&
-                            <p title={subprogram}
+                            <div title={subprogram}
                                className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
                               <SubprogramBadge value={subprogram} hasBadgeAbove={true}/> {subprogram}
-                            </p>}
+                            </div>}
                             {teamRole &&
-                            <p title={teamRole}
+                            <div title={teamRole}
                                className="text-xs t-4 overflow-ellipsis overflow-hidden whitespace-nowrap">
                               <IconBadge hasBadgeAbove={true} icon={mdiFlash} title="Team Load"/> {teamRole}
-                            </p>}
+                            </div>}
                         </div>
                     </div>
                 </div>

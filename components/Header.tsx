@@ -4,7 +4,7 @@ import Link from 'next/link'
 import {mdiRefresh} from '@mdi/js'
 import Icon from "@mdi/react";
 
-type Props = {
+export type HeaderProps = {
     currentUrl: string,
     sheetId: number,
     version: string
@@ -15,7 +15,7 @@ const links = [
     {url: "program", text: "Program View"}
 ]
 
-export default function Header({currentUrl, sheetId, version}: Props) {
+export default function Header({currentUrl, sheetId, version}: HeaderProps) {
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
     const [draftMenuOpen, setDraftMenuOpen] = useState(false);
 

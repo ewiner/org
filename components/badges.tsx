@@ -24,7 +24,7 @@ const Badge: React.FunctionComponent<BadgeProps> = ({title, style, children, has
         className={`
             ${hasBadgeAbove ? "border-t-0" : ""} 
             ${hasBadgeLeft ? "border-l-0" : ""} 
-            inline-block h-6 w-6 py-1 font-bold text-center text-xs border border-gray-600 rounded-sm
+            inline-block h-6 w-6 py-1 font-bold text-center text-xs border border-gray-600 rounded-sm font-mono
         `}>
         {children}
     </div>
@@ -43,7 +43,7 @@ export function IconBadge({icon, title, ...badgeProps}: IconBadgeProps) {
 const PROGRAM_COLORS = ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928']
 const SUBPROGRAM_COLORS = ['#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5', '#d9d9d9', '#bc80bd', '#ccebc5', '#ffed6f', ...PROGRAM_COLORS]
 const PROGRAM_INITIALS_OVERRIDE = {
-    "Compliance": "CMP"
+    "Compliance / Trust & Safety": "CMP"
 }
 const SUBPROGRAM_INITIALS_OVERRIDE = {}
 
@@ -71,11 +71,11 @@ function badgeMaker(colors: string[], overrides: { [key: string]: string }) {
         const lighter = tinycolor(color).lighten(70).toHexString();
         const textcolor = tinycolor.mostReadable(color, [lighter, darker]).toHexString()
         return (
-            <Badge hasBadgeAbove={true} title={value} style={{
+            <Badge title={value} style={{
                 backgroundColor: color,
                 color: textcolor,
                 borderColor: darker
-            }}>
+            }} {...badgeProps} >
                 {initials}
             </Badge>
         );
@@ -91,24 +91,24 @@ type RoleIconProps = {
 }
 
 export function RoleIcon({role, ...others}: RoleIconProps) {
-    const render = (svgPath) => <Icon title={role} path={svgPath} {...others} />
+    const render = (txt) => <Badge title={role} {...others}>{txt}</Badge>
     switch (role) {
         case "Mobile":
-            return render(mdiCellphone)
+            return render("M")
         case "Backend":
-            return render(mdiIframeBracesOutline)
+            return render("BE")
         case "Frontend":
-            return render(mdiXml)
+            return render("FE")
         case "QA":
-            return render(mdiTestTube)
+            return render("QA")
         case "Product":
-            return render(mdiPackageVariant)
+            return render("PM")
         case "TPM":
-            return render(mdiCalendarArrowRight)
+            return render("TPM")
         case "UI":
-            return render(mdiPencilRuler)
+            return render("UI")
         case "UX":
-            return render(mdiFormatTextWrappingOverflow)
+            return render("UX")
         default:
             return null
     }

@@ -1,9 +1,9 @@
 import {GetStaticPaths, GetStaticProps} from 'next'
 import {Hierarchy, Person} from "../../src/types";
 import PersonView from "../../components/PersonView";
-import Header from "../../components/Header";
 import fetchPeople from "../../src/api/fetchPeople";
 import {useRouter} from "next/router";
+import Chart from "../../components/Chart";
 
 type Props = {
     people: Person[],
@@ -54,16 +54,10 @@ export default function ManagementView(props: Props) {
     const data = membersOf[""].map(makeMembers)
 
     return (
-        <>
-            <Header currentUrl="management" sheetId={sheetId} version={version}/>
-            <div className="flex container p-4 text-gray-800">
-                {data.length === 0 ?
-                    <p>No data found. Please double-check that the Google sheet has all the correct columns.</p> :
-                    data.map(person => (
-                        <PersonView key={person.name} person={person} inline={false} />
-                    ))
-                }
-            </div>
-        </>
+        <Chart currentUrl="management" sheetId={sheetId} version={version}>
+            {data.map(person => (
+                <PersonView key={person.name} person={person} inline={false}/>
+            ))}
+        </Chart>
     )
 }

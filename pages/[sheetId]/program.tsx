@@ -1,10 +1,10 @@
 import {GetStaticPaths, GetStaticProps} from 'next'
 import {Hierarchy, Person} from "../../src/types";
 import PersonView from "../../components/PersonView";
-import Header from "../../components/Header";
 import fetchPeople from "../../src/api/fetchPeople";
 import {useRouter} from "next/router";
 import {groupBy} from 'lodash'
+import Chart from "../../components/Chart";
 
 type Props = {
     people: Person[],
@@ -74,16 +74,10 @@ export default function ProgramView(props: Props) {
     }
 
     return (
-        <>
-            <Header currentUrl="program" sheetId={sheetId} version={version}/>
-            <div className="flex container p-4 text-gray-800">
-                {data.length === 0 ?
-                    <p>No data found. Please double-check that the Google sheet has all the correct columns.</p> :
-                    data.map(person => (
-                        <PersonView key={person.name} person={person} inline={false}/>
-                    ))
-                }
-            </div>
-        </>
+        <Chart currentUrl="program" sheetId={sheetId} version={version}>
+            {data.map(person => (
+                <PersonView key={person.name} person={person} inline={false}/>
+            ))}
+        </Chart>
     )
 }
