@@ -1,7 +1,7 @@
 import React from "react";
 import {Person, Program} from "../src/types";
 import {mdiFlash} from '@mdi/js';
-import {EmptyBadge, IconBadge, NumberBadge, RoleBadge} from "./badges";
+import {EmptyBadge, IconBadge, NumberBadge, RoleBadge, TeamLeadRoleBadge} from "./badges";
 import ChartNode from "./chart/ChartNode";
 import PersonView from "./PersonView";
 
@@ -54,6 +54,15 @@ export default function ProgramView({program}: Props) {
             inline={false}
         >
             <p className="mb-2">{name}</p>
+            {members
+                .filter(p => p.teamleadrole)
+                .map((p, idx) => (
+                    <div key={p.name || p.opening} title={p.name || p.opening}
+                         className="text-xs t-4 overflow-ellipsis overflow-hidden whitespace-nowrap">
+                        <TeamLeadRoleBadge hasBadgeAbove={idx !== 0} teamleadrole={p.teamleadrole} icrole={p.icrole}
+                                           className="inline-block"/> {p.name}
+                    </div>
+                ))}
             {showMembersBadges && <MembersBadges members={members}/>}
         </ChartNode>
     );

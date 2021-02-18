@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2'
 import React from "react";
-import {Role} from "../src/types";
+import {LeadPosition, Role} from "../src/types";
 import Icon from "@mdi/react";
 import CSS from 'csstype';
 
@@ -128,6 +128,21 @@ export function RoleBadge({role, colored, ...others}: RoleIconProps) {
             return render("UX", '#fddaec')
         default:
             return null
+    }
+}
+
+
+export function TeamLeadRoleBadge({
+                                      teamleadrole,
+                                      icrole,
+                                      ...badgeProps
+                                  }: { teamleadrole: "" | LeadPosition, icrole: "" | Role } & BadgeProps) {
+    switch (teamleadrole) {
+        case "Program Tech Lead":
+        case "Subprogram Tech Lead":
+            return <Badge title={teamleadrole} {...badgeProps}>TL</Badge>
+        default:
+            return <RoleBadge role={icrole} colored={false} {...badgeProps}/>
     }
 }
 
