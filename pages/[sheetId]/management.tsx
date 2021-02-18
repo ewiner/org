@@ -3,7 +3,9 @@ import {Hierarchy, Person} from "../../src/types";
 import PersonView from "../../components/PersonView";
 import fetchPeople from "../../src/api/fetchPeople";
 import {useRouter} from "next/router";
-import Chart from "../../components/Chart";
+import Chart from "../../components/chart/Chart";
+import Header from "../../components/Header";
+import React from "react";
 
 type Props = {
     people: Person[],
@@ -75,10 +77,13 @@ export default function ManagementView(props: Props) {
     const data = membersOf[""].map(makeMembers)
 
     return (
-        <Chart currentUrl="management" sheetId={sheetId} version={version}>
-            {data.map(person => (
-                <PersonView key={person.name} person={person} inline={false}/>
-            ))}
-        </Chart>
+        <>
+            <Header currentUrl="management" sheetId={sheetId} version={version}/>
+            <Chart>
+                {data.map(person => (
+                    <PersonView key={person.name} person={person} inline={false}/>
+                ))}
+            </Chart>
+        </>
     )
 }

@@ -1,8 +1,9 @@
 import React from "react";
-import MembersList from "./MembersList";
 import {Hierarchy, Person} from "../src/types";
 import {mdiFlash} from '@mdi/js';
 import {EmptyBadge, IconBadge, NumberBadge, ProgramBadge, RoleIcon, SubprogramBadge} from "./badges";
+import ChartNode from "./chart/ChartNode";
+import {partition} from "lodash";
 
 type Props = {
     person: Hierarchy<Person>,
@@ -13,8 +14,7 @@ function bgColor(person: Person) {
     return person.opening ? (person.name ? "bg-gray-100" : "bg-gray-200") : "bg-white"
 }
 
-function MembersBadges(props: { members: Hierarchy<Person>[] }) {
-    const {members} = props
+function MembersBadges({members}: { members: Person[] }) {
     const showPrograms = members.some(p => p.program)
     const showSubprograms = members.some(p => p.subprogram)
     const showRoles = false //members.some(p => p.icrole)
@@ -22,7 +22,7 @@ function MembersBadges(props: { members: Hierarchy<Person>[] }) {
         <div className="mt-4">
             <ol className="whitespace-nowrap">
                 {members.map((person, idx) => {
-                    const {members, icrole, managertitle, name, program, opening, subprogram} = person
+                    const {icrole, program, subprogram} = person
                     return (
                         <li key={person.name || person.opening} className="inline-block">
                             <NumberBadge idx={idx + 1} className={`${bgColor(person)}`}/>
@@ -50,54 +50,56 @@ function MembersBadges(props: { members: Hierarchy<Person>[] }) {
 export default function PersonView({person, inline}: Props) {
     const {members, icrole, managertitle, name, program, opening, subprogram} = person;
     const teamRole = parseTeamRole(person)
+
+    const [leafMembers, nonLeafMembers]: [Hierarchy<Person>[], Hierarchy<Person>[]] = partition(
+        members,
+        person => person.members.length === 0
+    )
+
     return (
-        <div>
-            <div className="flex flex-col w-full">
-                <div className={`flex ${inline ? "mb-2" : "justify-center"}`}>
-                    <div
-                        className={`${bgColor(person)} shadow border border-gray-400 rounded-md p-2`}
-                        style={{minWidth: "12rem"}}>
-                        <div className="mb-2">
-                            <div className="float-right">
-                                <RoleIcon role={icrole} className="h-6"/>
-                            </div>
-                            <p>{name}</p>
-                            {opening &&
-                            <p title={opening}
-                               className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
-                                {opening}
-                            </p>}
-                            {managertitle &&
-                            <p title={managertitle}
-                               className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
-                                {managertitle}
-                            </p>}
-                        </div>
-                        <div className="">
-                            {program &&
-                            <div title={program}
-                                 className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
-                              <ProgramBadge value={program} className="inline-block"/> {program}
-                            </div>}
-                            {subprogram &&
-                            <div title={subprogram}
-                                 className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
-                              <SubprogramBadge value={subprogram} hasBadgeAbove={true}
-                                               className="inline-block"/> {subprogram}
-                            </div>}
-                            {teamRole &&
-                            <div title={teamRole}
-                                 className="text-xs t-4 overflow-ellipsis overflow-hidden whitespace-nowrap">
-                              <IconBadge hasBadgeAbove={true} icon={mdiFlash} title="Team Lead"
-                                         className="inline-block"/> {teamRole}
-                            </div>}
-                        </div>
-                        {members.length > 0 && <MembersBadges members={members}/>}
-                    </div>
+        <ChartNode
+            nonLeafChildren={nonLeafMembers.map(p => <PersonView key={p.name || p.opening} person={p} inline={false}/>)}
+            leafChildren={leafMembers.map(p => <PersonView key={p.name || p.opening} person={p} inline={true}/>)}
+            inline={inline}
+            className={bgColor(person)}
+        >
+            <div className="mb-2">
+                <div className="float-right">
+                    <RoleIcon role={icrole} className="h-6"/>
                 </div>
+                <p>{name}</p>
+                {opening &&
+                <p title={opening}
+                   className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
+                    {opening}
+                </p>}
+                {managertitle &&
+                <p title={managertitle}
+                   className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
+                    {managertitle}
+                </p>}
             </div>
-            {members.length > 0 && <MembersList members={members}/>}
-        </div>
+            <div className="">
+                {program &&
+                <div title={program}
+                     className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
+                  <ProgramBadge value={program} className="inline-block"/> {program}
+                </div>}
+                {subprogram &&
+                <div title={subprogram}
+                     className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
+                  <SubprogramBadge value={subprogram} hasBadgeAbove={true}
+                                   className="inline-block"/> {subprogram}
+                </div>}
+                {teamRole &&
+                <div title={teamRole}
+                     className="text-xs t-4 overflow-ellipsis overflow-hidden whitespace-nowrap">
+                  <IconBadge hasBadgeAbove={true} icon={mdiFlash} title="Team Lead"
+                             className="inline-block"/> {teamRole}
+                </div>}
+            </div>
+            {members.length > 0 && <MembersBadges members={members}/>}
+        </ChartNode>
     );
 };
 

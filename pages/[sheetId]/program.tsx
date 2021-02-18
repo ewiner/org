@@ -1,10 +1,12 @@
 import {GetStaticPaths, GetStaticProps} from 'next'
-import {Hierarchy, Person} from "../../src/types";
-import PersonView from "../../components/PersonView";
+import {Person, Program} from "../../src/types";
 import fetchPeople from "../../src/api/fetchPeople";
 import {useRouter} from "next/router";
 import {groupBy} from 'lodash'
-import Chart from "../../components/Chart";
+import Chart from "../../components/chart/Chart";
+import ProgramView from "../../components/ProgramView";
+import Header from "../../components/Header";
+import React from "react";
 
 type Props = {
     people: Person[],
@@ -34,50 +36,59 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }
 }
 
-export default function ProgramView(props: Props) {
+export default function ProgramsView(props: Props) {
     const router = useRouter()
     const sheetId = parseInt(router.query.sheetId as string, 10)
     const {people, version} = props
 
     const byProgram = groupBy<Person>(people, p => p.program);
-    const toHierarchy = (p: Person) => ({...p, members: []})
 
-    const data: Hierarchy<Person>[] = []
+    const sortPeople = (people: Person[]) => people.sort((a, b) => {
+        function trySort(fn: ((p: Person) => any)): number {
+            const aResult = fn(a)
+            const bResult = fn(b)
+            if (aResult < bResult) return -1
+            if (aResult > bResult) return 1
+            return 0
+        }
+
+        return trySort(p => p.icrole) ||
+            -trySort(p => p.teamleadrole) ||
+            trySort(p => p.name || "zz") ||
+            trySort(p => p.opening)
+    })
+
+    const programs: Program[] = []
     for (const program of Object.keys(byProgram)) {
         const programPeople: Person[] = byProgram[program]
+
         const bySubprogram = groupBy<Person>(programPeople, p => p.subprogram)
-        const members: Hierarchy<Person>[] = (bySubprogram[""] || []).map(toHierarchy)
+        const subprograms: Program[] = []
         for (const subprogram of Object.keys(bySubprogram)) {
             if (subprogram !== "") {
-                members.push({
+                subprograms.push({
                     name: subprogram,
-                    managertitle: "",
-                    icrole: "",
-                    program: program,
-                    subprogram: subprogram,
-                    manager: "",
-                    teamleadrole: "",
-                    members: bySubprogram[subprogram].map(toHierarchy)
+                    subprograms: [],
+                    members: sortPeople(bySubprogram[subprogram])
                 })
             }
         }
-        data.push({
+
+        programs.push({
             name: program || "No Program",
-            managertitle: "",
-            icrole: "",
-            program: program,
-            subprogram: "",
-            manager: "",
-            teamleadrole: "",
-            members: members
+            subprograms: subprograms,
+            members: sortPeople(bySubprogram[""] || [])
         })
     }
 
     return (
-        <Chart currentUrl="program" sheetId={sheetId} version={version}>
-            {data.map(person => (
-                <PersonView key={person.name} person={person} inline={false}/>
-            ))}
-        </Chart>
+        <>
+            <Header currentUrl="management" sheetId={sheetId} version={version}/>
+            <Chart>
+                {programs.map(program => (
+                    <ProgramView key={program.name} program={program}/>
+                ))}
+            </Chart>
+        </>
     )
 }

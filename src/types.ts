@@ -15,3 +15,9 @@ export type Person = {
 export type Hierarchy<P> = P & {
     members: Hierarchy<P>[]
 }
+
+export type Program = {
+    name: string,
+    subprograms: Program[],
+    members: Person[],
+}

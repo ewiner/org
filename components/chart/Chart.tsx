@@ -1,12 +1,11 @@
-import Header, {HeaderProps} from "./Header";
 import React, {useEffect, useState} from "react";
 
-type Props = HeaderProps & {
+type Props = {
     children: React.ReactNode
 }
 
 export default function Chart(props: Props) {
-    const {children, ...headerProps} = props
+    const {children} = props
 
     // The nonstandard CSS zoom property works better (adjusts the DOM size, better scroll performance),
     // but `transform: scale()` can animate. So we animate first with scale, then replace with CSS zoom.
@@ -26,7 +25,6 @@ export default function Chart(props: Props) {
 
     return (
         <>
-            <Header {...headerProps} />
             {React.Children.count(children) === 0 ?
                 (
                     <div className="flex container p-4 text-gray-800">
@@ -49,7 +47,7 @@ export default function Chart(props: Props) {
                             </button>
 
                         </div>
-                        <div className="flex p-4 text-gray-800 transform-gpu origin-top-left transition-transform"
+                        <div className="flex p-4 pl-24 text-gray-800 transform-gpu origin-top-left transition-transform"
                              style={{
                                  zoom: zoom,
                                  transform: `scale(${smoothZoom})`,
