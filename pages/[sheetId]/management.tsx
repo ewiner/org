@@ -40,15 +40,17 @@ export default function ManagementView(props: Props) {
 
     const membersOf: { [person: string]: Person[] } = people.reduce((acc, person) => ({
         ...acc,
-        [person.name]: []
+        [person.name || person.opening]: []
     }), {"": []})
 
     people.forEach(person => {
-        membersOf[person.manager].push(person)
+        if (membersOf[person.manager]) {
+            membersOf[person.manager].push(person)
+        }
     })
 
     function makeMembers(person: Person): Hierarchy<Person> {
-        return {...person, members: membersOf[person.name].map(child => makeMembers(child))}
+        return {...person, members: membersOf[person.name || person.opening].map(child => makeMembers(child))}
     }
 
     const data = membersOf[""].map(makeMembers)

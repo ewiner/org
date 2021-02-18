@@ -4,6 +4,7 @@ export type LeadPosition = "Program Tech Lead" | "Subprogram Tech Lead" | "Subpr
 export type Person = {
     name: string,
     managertitle: string,
+    opening: string,
     icrole: "" | Role,
     program: string,
     subprogram: string,

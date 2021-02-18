@@ -5,11 +5,13 @@ import {isRawPerson} from "./fetchPeople.guard";
 /** @see {isRawPerson} ts-auto-guard:type-guard */
 export type RawPerson = {
     person: string,
+    jobtitle: string,
+    manager: string,
     managertitle: string,
+    opening: string,
     icrole: "" | Role,
     program: string,
     subprogram: string,
-    manager: string,
     teamleadrole: "" | LeadPosition
 }
 
@@ -31,6 +33,5 @@ export default async function fetchPeople(sheetId: number): Promise<PeopleData |
             const {person, ...rest} = personData
             return {...rest, name: person}
         })
-        .filter(person => person.name.length > 0)
     return {version, people}
 }

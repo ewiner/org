@@ -10,7 +10,7 @@ type Props = {
 }
 
 export default function PersonView({person, inline}: Props) {
-    const {members, icrole, managertitle, name, program, subprogram} = person;
+    const {members, icrole, managertitle, name, program, opening, subprogram} = person;
     const teamRole = parseTeamRole(person)
     return (
         <div>
@@ -23,6 +23,11 @@ export default function PersonView({person, inline}: Props) {
                                 <RoleIcon role={icrole} className="h-6"/>
                             </div>
                             <p>{name}</p>
+                            {opening &&
+                            <p title={opening}
+                               className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
+                                {opening}
+                            </p>}
                             {managertitle &&
                             <p title={managertitle}
                                className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
