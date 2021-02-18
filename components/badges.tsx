@@ -2,29 +2,23 @@ import tinycolor from 'tinycolor2'
 import React from "react";
 import {Role} from "../src/types";
 import Icon from "@mdi/react";
-import {
-    mdiCalendarArrowRight,
-    mdiCellphone, mdiFlash, mdiFormatTextWrappingOverflow,
-    mdiIframeBracesOutline,
-    mdiPackageVariant, mdiPencilRuler,
-    mdiTestTube,
-    mdiXml
-} from "@mdi/js";
 import CSS from 'csstype';
 
 type BadgeProps = {
     title?: string,
     hasBadgeAbove?: boolean,
-    hasBadgeLeft?: Boolean,
+    hasBadgeLeft?: boolean,
+    className?: string,
     style?: CSS.Properties
 }
 
-const Badge: React.FunctionComponent<BadgeProps> = ({title, style, children, hasBadgeAbove = false, hasBadgeLeft = false}) => (
+const Badge: React.FunctionComponent<BadgeProps> = ({title, style, children, hasBadgeAbove = false, hasBadgeLeft = false, className = ""}) => (
     <div title={title} style={style}
         className={`
+            ${className}
             ${hasBadgeAbove ? "border-t-0" : ""} 
             ${hasBadgeLeft ? "border-l-0" : ""} 
-            inline-block h-6 w-6 py-1 font-bold text-center text-xs border border-gray-600 rounded-sm font-mono
+             h-6 w-6 py-1 font-bold text-center text-xs border border-gray-600 rounded-sm font-mono
         `}>
         {children}
     </div>
@@ -33,7 +27,7 @@ const Badge: React.FunctionComponent<BadgeProps> = ({title, style, children, has
 type IconBadgeProps = BadgeProps & {
     icon: string,
 }
-export function IconBadge({icon, title, ...badgeProps}: IconBadgeProps) {
+export function IconBadge({icon, ...badgeProps}: IconBadgeProps) {
     return <Badge {...badgeProps}>
         <Icon path={icon} className="h-4 inline-block"/>
     </Badge>
@@ -85,7 +79,7 @@ function badgeMaker(colors: string[], overrides: { [key: string]: string }) {
 export const ProgramBadge = badgeMaker(PROGRAM_COLORS, PROGRAM_INITIALS_OVERRIDE)
 export const SubprogramBadge = badgeMaker(SUBPROGRAM_COLORS, SUBPROGRAM_INITIALS_OVERRIDE)
 
-type RoleIconProps = {
+type RoleIconProps = BadgeProps & {
     role: "" | Role,
     [key: string]: unknown
 }
@@ -112,4 +106,18 @@ export function RoleIcon({role, ...others}: RoleIconProps) {
         default:
             return null
     }
+}
+
+export function NumberBadge({idx, className = "", ...badgeProps}: {idx: number} & BadgeProps) {
+    return (
+        <Badge title={idx.toString()} className={`text-gray-500 ${className}`} {...badgeProps} >
+            {idx}
+        </Badge>
+    );
+}
+
+export function EmptyBadge(props: BadgeProps) {
+    return (
+        <Badge {...props}>&nbsp;</Badge>
+    )
 }

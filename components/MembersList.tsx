@@ -13,7 +13,7 @@ function Leafs({members}: Props) {
             <div className="border-r border-gray-400 w-36" />
             <ul className="pl-4 border-l border-gray-400 w-36">
                 {members.map((leaf, idX) => (
-                    <li key={leaf.name} className="relative">
+                    <li key={leaf.name || leaf.opening} className="relative">
                         <div className="-ml-4 mt-3 absolute border-gray-400 border-t-2 w-4 "/>
                         {idX == members.length - 1 ? <div className="-ml-6 mt-3-plus-border-2 h-full absolute w-0 border-gray-50 border-l-8 "/>: null}
                         <PersonView person={leaf} inline={true}/>
@@ -39,8 +39,9 @@ export default function MembersList({members}: Props) {
             {branches.map((branch, idX) => {
                 const isFirst = idX === 0
                 const isLast = idX === branches.length - 1
+                const key = Array.isArray(branch) ? "leaf" : branch.name || branch.opening
                 return (
-                    <li key={idX} className="relative p-6">
+                    <li key={key} className="relative p-6">
                         <div
                             style={{
                                 left: isFirst ? "50%" : 0,

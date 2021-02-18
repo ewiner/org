@@ -50,7 +50,26 @@ export default function ManagementView(props: Props) {
     })
 
     function makeMembers(person: Person): Hierarchy<Person> {
-        return {...person, members: membersOf[person.name || person.opening].map(child => makeMembers(child))}
+        const members = membersOf[person.name || person.opening]
+            .sort((a, b) => {
+                function trySort(fn: ((p: Person) => any)): number {
+                    const aResult = fn(a)
+                    const bResult = fn(b)
+                    if (aResult < bResult) return -1
+                    if (aResult > bResult) return 1
+                    return 0
+                }
+
+                return trySort(p => p.icrole) ||
+                    trySort(p => p.program) ||
+                    trySort(p => p.subprogram) ||
+                    trySort(p => p.manager) ||
+                    trySort(p => p.name || "zz") ||
+                    trySort(p => p.opening)
+            })
+            .map(child => makeMembers(child))
+
+        return {...person, members}
     }
 
     const data = membersOf[""].map(makeMembers)
