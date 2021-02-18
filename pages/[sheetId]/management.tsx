@@ -81,7 +81,7 @@ export default function ManagementView(props: Props) {
             <Header currentUrl="management" sheetId={sheetId} version={version}/>
             <Chart>
                 {data.map(person => (
-                    <PersonView key={person.name} person={person} inline={false}/>
+                    <PersonView key={person.name} style="management" person={person} inline={false}/>
                 ))}
             </Chart>
         </>

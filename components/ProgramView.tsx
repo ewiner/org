@@ -1,7 +1,7 @@
 import React from "react";
 import {Person, Program} from "../src/types";
 import {mdiFlash} from '@mdi/js';
-import {EmptyBadge, IconBadge, NumberBadge, RoleIcon} from "./badges";
+import {EmptyBadge, IconBadge, NumberBadge, RoleBadge} from "./badges";
 import ChartNode from "./chart/ChartNode";
 import PersonView from "./PersonView";
 
@@ -23,7 +23,7 @@ function MembersBadges({members}: { members: Person[] }) {
                         <li key={person.name || person.opening} className="inline-block">
                             <NumberBadge idx={idx + 1} className={`${bgColor(person)}`}/>
                             {icrole ?
-                                <RoleIcon role={icrole} hasBadgeAbove={true}/> :
+                                <RoleBadge role={icrole} hasBadgeAbove={true} colored={true}/> :
                                 <EmptyBadge hasBadgeAbove={true}/>
                             }
                             {teamleadrole ?
@@ -41,17 +41,20 @@ function MembersBadges({members}: { members: Person[] }) {
 
 export default function ProgramView({program}: Props) {
     const {name, subprograms, members} = program
+    const showMembersBadges = subprograms.length === 0 && members.length > 0 && program.name !== "No Program"
+
     return (
         <ChartNode
-            nonLeafChildren={subprograms.map(p => <ProgramView key={p.name} program={p}/>)}
-            leafChildren={members.map(p => <PersonView key={p.name || p.opening} person={{...p, members: []}} inline={true}/>)}
+            nonLeafChildren={subprograms.map(p =>
+                <ProgramView key={p.name} program={p}/>
+            )}
+            leafChildren={members.map(p =>
+                <PersonView style="program" key={p.name || p.opening} person={{...p, members: []}} inline={true}/>
+            )}
             inline={false}
         >
             <p className="mb-2">{name}</p>
-            {subprograms.length === 0 &&
-            members.length > 0 &&
-              program.name !== "No Program" &&
-            <MembersBadges members={members}/>}
+            {showMembersBadges && <MembersBadges members={members}/>}
         </ChartNode>
     );
 };

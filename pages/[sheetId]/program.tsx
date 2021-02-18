@@ -83,7 +83,7 @@ export default function ProgramsView(props: Props) {
 
     return (
         <>
-            <Header currentUrl="management" sheetId={sheetId} version={version}/>
+            <Header currentUrl="program" sheetId={sheetId} version={version}/>
             <Chart>
                 {programs.map(program => (
                     <ProgramView key={program.name} program={program}/>

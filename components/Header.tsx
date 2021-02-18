@@ -19,7 +19,7 @@ export default function Header({currentUrl, sheetId, version}: HeaderProps) {
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
     const [draftMenuOpen, setDraftMenuOpen] = useState(false);
 
-    const versions = ["Eric's Testbed", "Marcus 2020-02-04", "Active 2020-01-30"]
+    const versions = ["Current State", "Eric 2021-02-17", "Playground"]
     versions[sheetId - 1] = version
 
     const onRefreshClick = () => {
