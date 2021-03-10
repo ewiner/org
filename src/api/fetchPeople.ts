@@ -7,7 +7,6 @@ export type RawPerson = {
     person: string,
     jobtitle: string,
     manager: string,
-    managertitle: string,
     opening: string,
     icrole: "" | Role,
     program: string,

@@ -12,7 +12,6 @@ export function isRawPerson(obj: any, _argumentName?: string): obj is RawPerson 
         typeof obj.person === "string" &&
         typeof obj.jobtitle === "string" &&
         typeof obj.manager === "string" &&
-        typeof obj.managertitle === "string" &&
         typeof obj.opening === "string" &&
         (obj.icrole === "" ||
             obj.icrole === "Mobile" ||

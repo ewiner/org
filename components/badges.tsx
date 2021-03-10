@@ -64,7 +64,7 @@ function badgeMaker(colors: string[], overrides: { [key: string]: string }) {
         if (initials === undefined) {
             initials = value
                 .split(/\s+/)
-                .filter(word => SKIPPED_FOR_ACRONYM.includes(word.toLowerCase()))
+                .filter(word => !SKIPPED_FOR_ACRONYM.includes(word.toLowerCase()))
                 .map(word => word[0])
                 .join('')
                 .toUpperCase()
