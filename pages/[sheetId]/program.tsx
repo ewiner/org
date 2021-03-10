@@ -54,8 +54,8 @@ export default function ProgramsView(props: Props) {
 
         return trySort(p => p.icrole) ||
             -trySort(p => p.teamleadrole) ||
-            trySort(p => p.name || "zz") ||
-            trySort(p => p.opening)
+            trySort(p => p.opening) ||
+            trySort(p => p.name || "zz")
     })
 
     const programs: Program[] = []

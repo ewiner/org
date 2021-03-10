@@ -1,9 +1,9 @@
-export type Role = "Mobile" | "Backend" | "Frontend" | "QA" | "Product" | "TPM" | "UI" | "UX"
-export type LeadPosition = "Program Tech Lead" | "Subprogram Tech Lead" | "Subprogram/Role Tech Lead" | "Program Product Lead" | "Subprogram Product Lead"
+export type Role = "Mobile" | "Backend" | "Frontend" | "QA" | "Product" | "TPM" | "UI" | "UX" | "Data" | "SRE"
+export type LeadPosition = "Program Role Lead" | "Subprogram Role Lead" | "Program Tech Lead" | "Subprogram Tech Lead"
 
 export type Person = {
     name: string,
-    managertitle: string,
+    jobtitle: string,
     opening: string,
     icrole: "" | Role,
     program: string,

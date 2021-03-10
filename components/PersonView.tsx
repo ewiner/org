@@ -44,7 +44,7 @@ function MembersBadges({members}: { members: Person[] }) {
 }
 
 export default function PersonView({person, inline, style}: Props) {
-    const {members, icrole, manager, managertitle, name, program, opening, subprogram} = person;
+    const {members, icrole, manager, jobtitle, name, program, opening, subprogram} = person;
     const teamRole = parseTeamRole(person)
 
     const [leafMembers, nonLeafMembers]: [Hierarchy<Person>[], Hierarchy<Person>[]] = partition(
@@ -108,10 +108,10 @@ export default function PersonView({person, inline, style}: Props) {
                    className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
                     {opening}
                 </p>}
-                {managertitle &&
-                <p title={managertitle}
+                {members.length > 0 &&
+                <p title={jobtitle}
                    className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
-                    {managertitle}
+                    {jobtitle}
                 </p>}
             </div>
             <div>
@@ -126,20 +126,15 @@ export default function PersonView({person, inline, style}: Props) {
 function parseTeamRole(person: Person) {
     let teamRole = null
     switch (person.teamleadrole) {
-        case "Program Tech Lead":
-            teamRole = `Tech Lead`
+        case "":
             break;
+        case "Program Tech Lead":
         case "Subprogram Tech Lead":
             teamRole = `Tech Lead`
             break;
-        case "Subprogram/Role Tech Lead":
+        case "Program Role Lead":
+        case "Subprogram Role Lead":
             teamRole = `${person.icrole} Lead`
-            break;
-        case "Program Product Lead":
-            teamRole = `Product Lead`
-            break;
-        case "Subprogram Product Lead":
-            teamRole = `Product Lead`
             break;
         default:
             break;
