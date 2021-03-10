@@ -53,6 +53,7 @@ const SUBPROGRAM_INITIALS_OVERRIDE = {}
 const MANAGER_INITIALS_OVERRIDE = {
     "Brian KimJohnson": "BKJ"
 }
+const SKIPPED_FOR_ACRONYM = ["/", "and", "&"]
 
 function badgeMaker(colors: string[], overrides: { [key: string]: string }) {
     const known: { [key: string]: string } = {}
@@ -62,9 +63,9 @@ function badgeMaker(colors: string[], overrides: { [key: string]: string }) {
         let initials = overrides[value]
         if (initials === undefined) {
             initials = value
-                .split(' ')
+                .split(/\s+/)
+                .filter(word => SKIPPED_FOR_ACRONYM.includes(word.toLowerCase()))
                 .map(word => word[0])
-                .filter(w => w !== "/")
                 .join('')
                 .toUpperCase()
         }
