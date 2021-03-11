@@ -60,7 +60,7 @@ export default function ProgramsView(props: Props) {
         }
 
         programs.push({
-            name: program || "No Program",
+            name: program || "No Program Assigned",
             subprograms: subprograms,
             members: bySubprogram[""] || []
         })

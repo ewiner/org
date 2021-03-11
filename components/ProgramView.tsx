@@ -41,7 +41,7 @@ function MembersBadges({members}: { members: Person[] }) {
 
 export default function ProgramView({program}: Props) {
     const {name, subprograms, members} = program
-    const showMembersBadges = subprograms.length === 0 && members.length > 0 && program.name !== "No Program"
+    const showMembersBadges = subprograms.length === 0 && members.length > 0 && program.name !== "No Program Assigned"
 
     return (
         <ChartNode
