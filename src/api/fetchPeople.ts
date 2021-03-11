@@ -4,6 +4,7 @@ import {isRawPerson} from "./fetchPeople.guard";
 
 /** @see {isRawPerson} ts-auto-guard:type-guard */
 export type RawPerson = {
+    hide?: string,
     person: string,
     jobtitle: string,
     manager: string,
@@ -26,6 +27,7 @@ export default async function fetchPeople(sheetId: number): Promise<PeopleData |
     }
     const version = sheet.sheetName
     const people = sheet.rows
+        .filter(o => !o.hide)
         .filter(o => isRawPerson(o))
         .map(personData => {
             // rename the "person" column to "name"

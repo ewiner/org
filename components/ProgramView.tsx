@@ -10,7 +10,7 @@ type Props = {
 }
 
 function bgColor(person: Person) {
-    return person.opening ? (person.name ? "bg-gray-100" : "bg-gray-200") : "bg-white"
+    return person.opening ? (person.name ? "text-gray-600 bg-gray-200" : "text-gray-700 bg-gray-400") : "text-gray-500 bg-white"
 }
 
 function MembersBadges({members}: { members: Person[] }) {

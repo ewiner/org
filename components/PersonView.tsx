@@ -12,7 +12,7 @@ type Props = {
 }
 
 function bgColor(person: Person) {
-    return person.opening ? (person.name ? "bg-gray-100" : "bg-gray-200") : "bg-white"
+    return person.opening ? (person.name ? "bg-gray-200" : "bg-gray-300") : "bg-white"
 }
 
 function MembersBadges({members}: { members: Person[] }) {
@@ -51,6 +51,7 @@ export default function PersonView({person, inline, style}: Props) {
         members,
         person => person.members.length === 0
     )
+    const showJobTitle = members.length > 0 || !name
 
     const badgesSection = style === "management" ? (
         <>
@@ -108,7 +109,7 @@ export default function PersonView({person, inline, style}: Props) {
                    className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
                     {opening}
                 </p>}
-                {members.length > 0 &&
+                {showJobTitle &&
                 <p title={jobtitle}
                    className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
                     {jobtitle}

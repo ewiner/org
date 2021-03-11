@@ -9,6 +9,7 @@ export function isRawPerson(obj: any, _argumentName?: string): obj is RawPerson 
         (obj !== null &&
             typeof obj === "object" ||
             typeof obj === "function") &&
+        typeof obj.hide === "string" &&
         typeof obj.person === "string" &&
         typeof obj.jobtitle === "string" &&
         typeof obj.manager === "string" &&

@@ -149,7 +149,7 @@ export function TeamLeadRoleBadge({
 
 export function NumberBadge({idx, className = "", ...badgeProps}: { idx: number } & BadgeProps) {
     return (
-        <Badge title={idx.toString()} className={`text-gray-500 ${className}`} {...badgeProps} >
+        <Badge title={idx.toString()} className={`${className}`} {...badgeProps} >
             {idx}
         </Badge>
     );
