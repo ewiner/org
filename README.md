@@ -1,34 +1,62 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Org
 
-## Getting Started
+An org chart visualizer.
 
-First, run the development server:
+###### This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Dev Docs
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Set up a Google sheet data source.
+1. Make a file called `.env.local`, and set the `DATA_GSHEET` variable to a Google sheet ID, like `DATA_GSHEET=1UgY8dBbj-lyVKwTn2ogJsUEtsam4eTMZO-IWL9-zC30`
+1. Start the dev server: `yarn dev`
+1. Visit http://localhost:3000/
+1. Push to deploy through Vercel.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### Bugs
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+* Correct the spacing issues for wide boxes
+* Switch from cached static pages to SWR with server-side props
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Future Features
 
-## Learn More
+* Security via URL obscurity - no default workbook, include the gsheet ID in the URL
+* Filter by manager
+* Filter by program
+* A 'notes' field per person, displayed in a tooltip/popup (e.g "on maternity leave until June" or "pitching in on the Skystar project")
+* New data model (see below) + better security
+* Zoom from the center of the viewport instead of the top left
+* More usable zoom buttons
+* Portrait/landscape layout switcher
+* When the Google Sheet can't be parsed, include more information about why
+* Animations as you switch views
 
-To learn more about Next.js, take a look at the following resources:
+### Maybe Future Features
+* View changes over time (but you could use new sheets for that, and it's duplicative with 10kft)
+* Percentages of allocation (but that never really works anyway)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### New Data Model
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The Google sheet data source is really easy to dive in and edit, but has drawbacks:
+1. Schema changes have to be copy-pasted across each sheet in the workbook.
+1. No easy way to promote changes to other sheets.
+1. Too easy to make typos or edits that break formatting.
+1. Can't make changes directly in the UI.
 
-## Deploy on Vercel
+What we could do instead is a data model where each view consists of:
+* A base view
+* Bulk data imports
+* Some changes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+So, the "Current Org" sheet could be:
+1. Based on [Blank]
+1. "Import from Greenhouse on 2/12/21" (or fake it with a spreadsheet import/edit tool)
+1. "Import from Bamboo on 2/12/21" (or fake it with a spreadsheet import/edit tool)
+1. Changed xxxx from xxxx to xxx
+1. Added xxx with properties xxxxx
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+And "Proposed New Org" could be:
+1. Based on 'Current State'
+1. Changed xxxx from xxxx to xxx
+1. Added xxx with properties xxxxx
+
+Then if the new org gets approved, you merge it into the Current Org sheet.  It would still be useful to have a spreadsheet-esque bulk edit tool, though.
