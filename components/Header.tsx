@@ -6,6 +6,7 @@ import Icon from "@mdi/react";
 
 export type HeaderProps = {
     currentUrl: string,
+    workbook: string
     sheetId: number,
     version: string
 }
@@ -15,7 +16,7 @@ const links = [
     {url: "program", text: "Program View"}
 ]
 
-export default function Header({currentUrl, sheetId, version}: HeaderProps) {
+export default function Header({currentUrl, workbook, sheetId, version}: HeaderProps) {
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
     const [draftMenuOpen, setDraftMenuOpen] = useState(false);
 
@@ -69,7 +70,7 @@ export default function Header({currentUrl, sheetId, version}: HeaderProps) {
                             <div className="hidden sm:block sm:ml-6">
                                 <div className="flex space-x-4">
                                     {links.map(link => (
-                                        <Link key={link.url} href={`/${sheetId}/${link.url}`}>
+                                        <Link key={link.url} href={`/${workbook}/${sheetId}/${link.url}`}>
                                             <a className={`${link.url === currentUrl ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"} px-3 py-2 rounded-md text-sm font-medium`}>
                                                 {link.text}
                                             </a>
@@ -108,7 +109,7 @@ export default function Header({currentUrl, sheetId, version}: HeaderProps) {
                                             Switch version:
                                         </span>
                                         {versions.map((version, idx) => (
-                                            <Link key={idx} href={`/${idx + 1}/${currentUrl}`}>
+                                            <Link key={idx} href={`/${workbook}/${idx + 1}/${currentUrl}`}>
                                                 <a onClick={() => setDraftMenuOpen(false)}
                                                    className={`${sheetId === idx + 1 ? "font-bold" : ""} block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100`}
                                                    role="menuitem">

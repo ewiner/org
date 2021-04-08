@@ -1,20 +1,9 @@
-import {GetServerSideProps, NextApiHandler} from 'next'
-import fetchPeople, {PeopleData} from "src/api/fetchPeople";
-
-export const serverProps: GetServerSideProps<PeopleData> = async (context) => {
-    const workbook = context.params.workbook as string
-    const sheetId = parseInt(context.params.sheetId as string, 10)
-    const data = await fetchPeople(workbook, sheetId)
-    if (data === null) {
-        return {notFound: true}
-    } else {
-        return {props: data}
-    }
-}
+import {NextApiHandler} from 'next'
+import fetchPeople from "src/api/fetchPeople";
+import parseParams from "src/api/parseParams";
 
 const handler: NextApiHandler = async (req, res) => {
-    const workbook = req.query.workbook as string
-    const sheetId = parseInt(req.query.sheetId as string, 10)
+    const {workbook, sheetId} = parseParams(req.query)
     const data = await fetchPeople(workbook, sheetId)
     if (data === null) {
         res.status(404)

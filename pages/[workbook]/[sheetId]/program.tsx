@@ -5,14 +5,15 @@ import Chart from "components/chart/Chart";
 import ProgramView from "components/ProgramView";
 import Header from "components/Header";
 import React from "react";
-import {serverProps} from "../../api/data/[workbook]/[sheetId]";
+import {serverProps} from "src/api/serverProps";
 import {InferGetServerSidePropsType} from "next";
+import parseParams from "src/api/parseParams";
 
 export const getServerSideProps = serverProps
 
 export default function ProgramsView(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const router = useRouter()
-    const sheetId = parseInt(router.query.sheetId as string, 10)
+    const {workbook, sheetId} = parseParams(router.query)
     const {people, version} = props
 
     const byProgram = groupBy<Person>(people, p => p.program);
@@ -42,7 +43,7 @@ export default function ProgramsView(props: InferGetServerSidePropsType<typeof g
 
     return (
         <>
-            <Header currentUrl="program" sheetId={sheetId} version={version}/>
+            <Header currentUrl="program" workbook={workbook} sheetId={sheetId} version={version}/>
             <Chart>
                 {programs.map(program => (
                     <ProgramView key={program.name} program={program}/>
