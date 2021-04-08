@@ -1,10 +1,10 @@
 import {GetStaticPaths, GetStaticProps} from 'next'
-import {Hierarchy, Person} from "../../src/types";
-import PersonView from "../../components/PersonView";
-import fetchPeople from "../../src/api/fetchPeople";
+import {Hierarchy, Person} from "src/types";
+import PersonView from "components/PersonView";
+import fetchPeople from "src/api/fetchPeople";
 import {useRouter} from "next/router";
-import Chart from "../../components/chart/Chart";
-import Header from "../../components/Header";
+import Chart from "components/chart/Chart";
+import Header from "components/Header";
 import React from "react";
 
 type Props = {

@@ -1,11 +1,11 @@
 import {GetStaticPaths, GetStaticProps} from 'next'
-import {Person, Program} from "../../src/types";
-import fetchPeople from "../../src/api/fetchPeople";
+import {Person, Program} from "src/types";
+import fetchPeople from "src/api/fetchPeople";
 import {useRouter} from "next/router";
 import {groupBy} from 'lodash'
-import Chart from "../../components/chart/Chart";
-import ProgramView from "../../components/ProgramView";
-import Header from "../../components/Header";
+import Chart from "components/chart/Chart";
+import ProgramView from "components/ProgramView";
+import Header from "components/Header";
 import React from "react";
 
 type Props = {
