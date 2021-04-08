@@ -1,21 +1,18 @@
 import {Person, Program} from "src/types";
-import {useRouter} from "next/router";
 import {groupBy} from 'lodash'
-import Chart from "components/chart/Chart";
 import ProgramView from "components/ProgramView";
-import Header from "components/Header";
 import React from "react";
 import {serverProps} from "src/api/serverProps";
 import {InferGetServerSidePropsType} from "next";
-import parseParams from "src/api/parseParams";
+import ChartPage from "../../../components/ChartPage";
 
 export const getServerSideProps = serverProps
 
 export default function ProgramsView(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    const router = useRouter()
-    const {workbook, sheetId} = parseParams(router.query)
-    const {people, version} = props
+    return <ChartPage data={props} currentUrl="program" makeChartData={makeChartData}/>
+}
 
+function makeChartData(people: Person[]) {
     const byProgram = groupBy<Person>(people, p => p.program);
 
     const programs: Program[] = []
@@ -41,14 +38,7 @@ export default function ProgramsView(props: InferGetServerSidePropsType<typeof g
         })
     }
 
-    return (
-        <>
-            <Header currentUrl="program" workbook={workbook} sheetId={sheetId} version={version}/>
-            <Chart>
-                {programs.map(program => (
-                    <ProgramView key={program.name} program={program}/>
-                ))}
-            </Chart>
-        </>
-    )
+    return programs.map(program => (
+        <ProgramView key={program.name} program={program}/>
+    ))
 }
