@@ -8,7 +8,7 @@ import ChartPage from "../../../components/ChartPage";
 export const getServerSideProps = serverProps
 
 export default function ManagementView(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    return <ChartPage data={props} currentUrl="management" makeChartData={makeChartData}/>
+    return <ChartPage initialData={props} currentUrl="management" makeChartData={makeChartData}/>
 }
 
 function makeChartData(people: Person[]) {

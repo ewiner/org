@@ -9,7 +9,7 @@ import ChartPage from "../../../components/ChartPage";
 export const getServerSideProps = serverProps
 
 export default function ProgramsView(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    return <ChartPage data={props} currentUrl="program" makeChartData={makeChartData}/>
+    return <ChartPage initialData={props} currentUrl="program" makeChartData={makeChartData}/>
 }
 
 function makeChartData(people: Person[]) {
