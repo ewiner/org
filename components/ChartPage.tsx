@@ -6,6 +6,7 @@ import {Person} from "../src/types";
 import Header from "./Header";
 import Chart from "./chart/Chart";
 import useSWR from "swr";
+import Head from "next/head";
 
 type Props = {
     initialData: PeopleData,
@@ -26,6 +27,10 @@ export default function ChartPage({initialData, currentUrl, makeChartData}: Prop
 
     return (
         <>
+            <Head>
+                <title>Org Chart - {version}</title>
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            </Head>
             <Header currentUrl={currentUrl} workbook={workbook} sheetId={sheetId} version={version}/>
             <Chart isRefreshing={isValidating} refresh={revalidate}>
                 {makeChartData(people)}

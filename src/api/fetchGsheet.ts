@@ -7,7 +7,7 @@ type GsheetResponse = SheetNotFound | Success
 
 // Stripped down version of https://github.com/55sketch/gsx2json/blob/master/api.js
 export default async function fetchGsheet(workbook: string, sheetid: number): Promise<GsheetResponse> {
-    const url = `https://spreadsheets.google.com/feeds/list/${workbook}/${sheetid}/public/values?alt=json`
+    const url = `https://spreadsheets.google.com/feeds/list/${encodeURIComponent(workbook)}/${encodeURIComponent(sheetid)}/public/values?alt=json`
 
     const response = await got(url, {throwHttpErrors: false})
     if (response.statusCode == 400) {

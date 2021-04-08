@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import {Transition} from '@headlessui/react'
 import Link from 'next/link'
-import {mdiRefresh} from '@mdi/js'
-import Icon from "@mdi/react";
+import DraftMenu from "./DraftMenu";
 
 export type HeaderProps = {
     currentUrl: string,
@@ -19,21 +18,6 @@ const links = [
 export default function Header({currentUrl, workbook, sheetId, version}: HeaderProps) {
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
     const [draftMenuOpen, setDraftMenuOpen] = useState(false);
-
-    const versions = [
-        "Current State",
-        "March 9 2021",
-        "Marcus's Scratchpad",
-        "Non-Final Answer",
-        "Rob's Scratchpad",
-        "Tech Demo"
-    ]
-    versions[sheetId - 1] = version
-
-    const onRefreshClick = () => {
-        setDraftMenuOpen(false)
-        alert("Not implemented!")
-    }
 
     return (
         <>
@@ -89,7 +73,7 @@ export default function Header({currentUrl, workbook, sheetId, version}: HeaderP
                                         <span className="sr-only">Open drafts menu</span>
                                         <a className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-1 ring-2 ring-offset-2 ring-offset-gray-800 ring-white rounded-full text-sm font-medium">Version: <span
                                             className="font-bold">
-                                            {versions[sheetId - 1]}
+                                            {version}
                                         </span></a>
                                     </button>
                                 </div>
@@ -102,28 +86,15 @@ export default function Header({currentUrl, workbook, sheetId, version}: HeaderP
                                     leaveFrom="transform opacity-100 scale-100"
                                     leaveTo="transform opacity-0 scale-95"
                                 >
-                                    <div
-                                        className="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
-                                        role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                                        <span className="block px-4 py-2 text-xs text-gray-700">
-                                            Switch version:
-                                        </span>
-                                        {versions.map((version, idx) => (
-                                            <Link key={idx} href={`/${workbook}/${idx + 1}/${currentUrl}`}>
-                                                <a onClick={() => setDraftMenuOpen(false)}
-                                                   className={`${sheetId === idx + 1 ? "font-bold" : ""} block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100`}
-                                                   role="menuitem">
-                                                    {version}
-                                                </a>
-                                            </Link>
-                                        ))}
-                                        <a onClick={onRefreshClick}
-                                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t-2"
-                                           role="menuitem">
-                                            <Icon path={mdiRefresh} title="Refresh" className="h-4 inline-block"/>{" "}
-                                            Refresh list...
-                                        </a>
-                                    </div>
+                                    {draftMenuOpen ?
+                                        <DraftMenu
+                                            workbook={workbook}
+                                            sheetId={sheetId}
+                                            currentUrl={currentUrl}
+                                            closeMenu={() => setDraftMenuOpen(false)}
+                                        /> :
+                                        null
+                                    }
                                 </Transition>
                             </div>
                         </div>

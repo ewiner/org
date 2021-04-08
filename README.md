@@ -19,7 +19,7 @@ An org chart visualizer.
 
 ### Future Features
 
-* Security via URL obscurity - no default workbook, include the gsheet ID in the URL
+* Security via URL obscurity - no default workbook when you go to the homepage
 * Filter by manager
 * Filter by program
 * A 'notes' field per person, displayed in a tooltip/popup (e.g "on maternity leave until June" or "pitching in on the Skystar project")
