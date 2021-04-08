@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2'
 import React from "react";
-import {LeadPosition, Role} from "../src/types";
+import {LeadPosition} from "../src/types";
 import Icon from "@mdi/react";
 import CSS from 'csstype';
 
@@ -55,6 +55,15 @@ const MANAGER_INITIALS_OVERRIDE = {
 }
 const SKIPPED_FOR_ACRONYM = ["/", "and", "&"]
 
+function acronymize(value: string) {
+    return value
+        .split(/\s+/)
+        .filter(word => !SKIPPED_FOR_ACRONYM.includes(word.toLowerCase()))
+        .map(word => word[0])
+        .join('')
+        .toUpperCase()
+}
+
 function badgeMaker(colors: string[], overrides: { [key: string]: string }) {
     const known: { [key: string]: string } = {}
 
@@ -62,12 +71,7 @@ function badgeMaker(colors: string[], overrides: { [key: string]: string }) {
         const {value, ...badgeProps} = props
         let initials = overrides[value]
         if (initials === undefined) {
-            initials = value
-                .split(/\s+/)
-                .filter(word => !SKIPPED_FOR_ACRONYM.includes(word.toLowerCase()))
-                .map(word => word[0])
-                .join('')
-                .toUpperCase()
+            initials = acronymize(value);
         }
 
         let color = known[value]
@@ -99,7 +103,7 @@ export const SubprogramBadge = badgeMaker(SUBPROGRAM_COLORS, SUBPROGRAM_INITIALS
 export const ManagerBadge = badgeMaker(MANAGER_COLORS, MANAGER_INITIALS_OVERRIDE)
 
 type RoleIconProps = BadgeProps & {
-    role: "" | Role,
+    role: string,
     colored: boolean
     [key: string]: unknown
 }
@@ -127,8 +131,10 @@ export function RoleBadge({role, colored, ...others}: RoleIconProps) {
             return render("UI", '#e5d8bd')
         case "UX":
             return render("UX", '#fddaec')
-        default:
+        case "":
             return null
+        default:
+            return render(acronymize(role), '#ffffff')
     }
 }
 
@@ -137,7 +143,7 @@ export function TeamLeadRoleBadge({
                                       teamleadrole,
                                       icrole,
                                       ...badgeProps
-                                  }: { teamleadrole: "" | LeadPosition, icrole: "" | Role } & BadgeProps) {
+                                  }: { teamleadrole: "" | LeadPosition, icrole: string } & BadgeProps) {
     switch (teamleadrole) {
         case "Program Tech Lead":
         case "Subprogram Tech Lead":

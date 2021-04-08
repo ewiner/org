@@ -1,5 +1,5 @@
 import fetchGsheet from "./fetchGsheet"
-import {LeadPosition, Person, Role} from "../types";
+import {LeadPosition, Person} from "../types";
 import {isRawPerson} from "./fetchPeople.guard";
 
 /** @see {isRawPerson} ts-auto-guard:type-guard */
@@ -9,7 +9,7 @@ export type RawPerson = {
     jobtitle: string,
     manager: string,
     opening: string,
-    icrole: "" | Role,
+    icrole: string,
     program: string,
     subprogram: string,
     teamleadrole: "" | LeadPosition
