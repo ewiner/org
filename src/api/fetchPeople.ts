@@ -15,13 +15,13 @@ export type RawPerson = {
     teamleadrole: "" | LeadPosition
 }
 
-type PeopleData = {
+export type PeopleData = {
     version: string,
     people: Person[]
 }
 
-export default async function fetchPeople(sheetId: number): Promise<PeopleData | null> {
-    const sheet = await fetchGsheet(sheetId)
+export default async function fetchPeople(workbook: string, sheetId: number): Promise<PeopleData | null> {
+    const sheet = await fetchGsheet(workbook, sheetId)
     if (sheet.result !== "success") {
         return null
     }

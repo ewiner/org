@@ -34,7 +34,7 @@ An org chart visualizer.
 * View changes over time (but you could use new sheets for that, and it's duplicative with 10kft)
 * Percentages of allocation (but that never really works anyway)
 
-### New Data Model
+### Idea for a New Data Model
 
 The Google sheet data source is really easy to dive in and edit, but has drawbacks:
 1. Schema changes have to be copy-pasted across each sheet in the workbook.
@@ -60,3 +60,5 @@ And "Proposed New Org" could be:
 1. Added xxx with properties xxxxx
 
 Then if the new org gets approved, you merge it into the Current Org sheet.  It would still be useful to have a spreadsheet-esque bulk edit tool, though.
+
+This could be implemented in any DB, but maybe https://github.com/gristlabs/grist-core or https://github.com/terminusdb/terminusdb would be cool to try.
