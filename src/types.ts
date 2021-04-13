@@ -11,12 +11,18 @@ export type Person = {
     teamleadrole: "" | LeadPosition
 }
 
+export type FilterPerson = Person & {
+    visible: boolean
+}
+
 export type Hierarchy<P> = P & {
     members: Hierarchy<P>[]
 }
 
+export type Filter = (person: Person, managers: string[]) => boolean
+
 export type Program = {
     name: string,
     subprograms: Program[],
-    members: Person[],
+    members: FilterPerson[],
 }

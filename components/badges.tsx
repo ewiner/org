@@ -57,7 +57,7 @@ const SKIPPED_FOR_ACRONYM = ["/", "and", "&"]
 
 function acronymize(value: string) {
     return value
-        .split(/\s+/)
+        .split(/[\s\/]+/)
         .filter(word => !SKIPPED_FOR_ACRONYM.includes(word.toLowerCase()))
         .map(word => word[0])
         .join('')

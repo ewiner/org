@@ -1,10 +1,9 @@
-import {Person, Program} from "src/types";
-import {groupBy} from 'lodash'
 import ProgramView from "components/ProgramView";
 import React from "react";
-import {serverProps} from "src/api/serverProps";
+import {serverProps} from "src/serverProps";
 import {InferGetServerSidePropsType} from "next";
-import ChartPage from "../../../components/ChartPage";
+import ChartPage from "components/ChartPage";
+import {ProcessedPeople} from "src/processData";
 
 export const getServerSideProps = serverProps
 
@@ -12,33 +11,20 @@ export default function ProgramsView(props: InferGetServerSidePropsType<typeof g
     return <ChartPage initialData={props} currentUrl="program" makeChartData={makeChartData}/>
 }
 
-function makeChartData(people: Person[]) {
-    const byProgram = groupBy<Person>(people, p => p.program);
+function makeChartData(people: ProcessedPeople) {
+    return people.byProgram.map(program => {
+        const filteredSubprograms = program.subprograms
+            .filter(s => s.members.find(p => p.visible) !== undefined)
+        const anyoneVisible = program.members.find(p => p.visible) !== undefined
 
-    const programs: Program[] = []
-    for (const program of Object.keys(byProgram)) {
-        const programPeople: Person[] = byProgram[program]
-
-        const bySubprogram = groupBy<Person>(programPeople, p => p.subprogram)
-        const subprograms: Program[] = []
-        for (const subprogram of Object.keys(bySubprogram)) {
-            if (subprogram !== "") {
-                subprograms.push({
-                    name: subprogram,
-                    subprograms: [],
-                    members: bySubprogram[subprogram]
-                })
-            }
+        if (!(anyoneVisible || filteredSubprograms.length > 0)) {
+            return null
         }
 
-        programs.push({
-            name: program || "No Program Assigned",
-            subprograms: subprograms,
-            members: bySubprogram[""] || []
-        })
-    }
-
-    return programs.map(program => (
-        <ProgramView key={program.name} program={program}/>
-    ))
+        const filteredProgram = {
+            ...program,
+            subprograms: filteredSubprograms
+        }
+        return <ProgramView key={program.name} program={filteredProgram}/>
+    })
 }

@@ -1,6 +1,6 @@
 import {NextApiHandler} from 'next'
 import fetchPeople from "src/api/fetchPeople";
-import parseParams from "src/api/parseParams";
+import parseParams from "src/parseParams";
 
 const handler: NextApiHandler = async (req, res) => {
     const {workbook, sheetId} = parseParams(req.query)

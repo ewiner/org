@@ -1,12 +1,12 @@
 import React from "react";
-import {Hierarchy, Person} from "../src/types";
+import {FilterPerson, Hierarchy, Person} from "../src/types";
 import {mdiFlash} from '@mdi/js';
 import {EmptyBadge, IconBadge, ManagerBadge, NumberBadge, ProgramBadge, RoleBadge, SubprogramBadge} from "./badges";
 import ChartNode from "./chart/ChartNode";
 import {partition} from "lodash";
 
 type Props = {
-    person: Hierarchy<Person>,
+    person: Hierarchy<FilterPerson>,
     inline: boolean,
     style: "management" | "program"
 }
@@ -43,12 +43,16 @@ function MembersBadges({members}: { members: Person[] }) {
     )
 }
 
+export function anyoneVisible(person: Hierarchy<FilterPerson>) {
+    return person.visible || person.members.find(anyoneVisible) !== undefined
+}
+
 export default function PersonView({person, inline, style}: Props) {
     const {members, icrole, manager, jobtitle, name, program, opening, subprogram} = person;
     const teamRole = parseTeamRole(person)
 
-    const [leafMembers, nonLeafMembers]: [Hierarchy<Person>[], Hierarchy<Person>[]] = partition(
-        members,
+    const [leafMembers, nonLeafMembers]: [Hierarchy<FilterPerson>[], Hierarchy<FilterPerson>[]] = partition(
+        members.filter(anyoneVisible),
         person => person.members.length === 0
     )
     const showJobTitle = members.length > 0 || !name

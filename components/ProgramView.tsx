@@ -48,7 +48,7 @@ export default function ProgramView({program}: Props) {
             nonLeafChildren={subprograms.map(p =>
                 <ProgramView key={p.name} program={p}/>
             )}
-            leafChildren={members.map(p =>
+            leafChildren={members.filter(m => m.visible).map(p =>
                 <PersonView style="program" key={p.name || p.opening} person={{...p, members: []}} inline={true}/>
             )}
             inline={false}

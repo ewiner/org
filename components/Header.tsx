@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Transition} from '@headlessui/react'
 import Link from 'next/link'
 import DraftMenu from "./DraftMenu";
+import {useRouter} from "next/router";
 
 export type HeaderProps = {
     currentUrl: string,
@@ -16,8 +17,14 @@ const links = [
 ]
 
 export default function Header({currentUrl, workbook, sheetId, version}: HeaderProps) {
+    const router = useRouter();
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
     const [draftMenuOpen, setDraftMenuOpen] = useState(false);
+
+    const href = link => ({
+        pathname: `/[workbook]/[sheetId]/${link.url}`,
+        query: router.query
+    })
 
     return (
         <>
@@ -54,7 +61,7 @@ export default function Header({currentUrl, workbook, sheetId, version}: HeaderP
                             <div className="hidden sm:block sm:ml-6">
                                 <div className="flex space-x-4">
                                     {links.map(link => (
-                                        <Link key={link.url} href={`/${workbook}/${sheetId}/${link.url}`}>
+                                        <Link key={link.url} href={href(link)}>
                                             <a className={`${link.url === currentUrl ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"} px-3 py-2 rounded-md text-sm font-medium`}>
                                                 {link.text}
                                             </a>
@@ -104,7 +111,7 @@ export default function Header({currentUrl, workbook, sheetId, version}: HeaderP
                 <div className={`${mobileNavOpen ? "block" : "hidden"} sm:hidden`}>
                     <div className="px-2 pt-2 pb-3 space-y-1">
                         {links.map(link => (
-                            <Link key={link.url} href={`/${sheetId}/${link.url}`}>
+                            <Link key={link.url} href={href(link)}>
                                 <a className={`${link.url === currentUrl ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"} block px-3 py-2 rounded-md text-base font-medium`}>
                                     {link.text}
                                 </a>
