@@ -32,7 +32,7 @@ function useZoom(extraProperty: string) {
         return () => clearTimeout(timer);
     }, [smoothZoom]);
 
-    const zoomClass = "transform-gpu origin-top-left"
+    const zoomClass = "transition transform-gpu origin-top-left"
     const zoomCss = {
         zoom: zoom,
         transform: `scale(${smoothZoom})`,

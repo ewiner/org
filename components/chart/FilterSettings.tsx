@@ -18,6 +18,9 @@ function leftPad(choice: string | null) {
 export function FilterDropdown(props: DropdownProps) {
     const {label, emptyChoice, choices, setting, setSetting} = props
 
+    // tricks PurgeCSS into including all these necessary padding styles, so they'll exist when leftPad() calcs them
+    const plOptions = <span className="pl-0 pl-2 pl-4 pl-6 pl-8 pl-10 pl-12 pl-14 pl-16 hidden h-0 w-0"/>
+
     const selectIcon = (
         <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
             <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
@@ -45,6 +48,7 @@ export function FilterDropdown(props: DropdownProps) {
             >
                 {({open}) => (
                     <>
+                        {plOptions}
                         <Listbox.Label className="block text-sm leading-5 font-medium text-gray-700">
                             {label}
                         </Listbox.Label>
