@@ -32,7 +32,7 @@ function useZoom(extraProperty: string) {
         return () => clearTimeout(timer);
     }, [smoothZoom]);
 
-    const zoomClass = "transform-gpu origin-top-left transition-transform"
+    const zoomClass = "transform-gpu origin-top-left"
     const zoomCss = {
         zoom: zoom,
         transform: `scale(${smoothZoom})`,
@@ -188,8 +188,9 @@ export default function Chart(props: Props) {
                             </button>
 
                         </div>
-                        <div className={`flex p-4 pl-24 text-gray-800 ml-${showFilterOptions ? 48 : 0} ${zoomClass}`}
-                             style={zoomCss}>
+                        <div
+                            className={`flex p-4 pl-24 text-gray-800 ${showFilterOptions ? "ml-48" : "ml-0"} ${zoomClass}`}
+                            style={zoomCss}>
                             {children}
                         </div>
                     </>
