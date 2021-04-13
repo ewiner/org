@@ -8,6 +8,11 @@ module.exports = {
       //     permanent: false,
       // },
       {
+        source: '/:workbook',
+        destination: `/:workbook/1/management`,
+        permanent: false,
+      },
+      {
         source: '/:sheetId/management',
         destination: `/${process.env.DATA_GSHEET}/:sheetId/management`,
         permanent: false,

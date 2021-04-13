@@ -12,6 +12,7 @@ class MyDocument extends Document {
             <Html>
                 <Head>
                     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans"/>
+                    <link rel="icon" href="/images/favicon.png"/>
                 </Head>
                 <body className="bg-gray-50">
                 <Main/>

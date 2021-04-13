@@ -6,31 +6,28 @@ An org chart visualizer.
 
 ### Dev Docs
 
-1. Set up a Google sheet data source.
-1. Make a file called `.env.local`, and set the `DATA_GSHEET` variable to a Google sheet ID, like `DATA_GSHEET=1UgY8dBbj-lyVKwTn2ogJsUEtsam4eTMZO-IWL9-zC30`
-1. Start the dev server: `yarn dev`
-1. Visit http://localhost:3000/
+1. Set up a Google sheet data source and record the Google sheet ID, like `1UgY8dBbj-lyVKwTn2ogJsUEtsam4eTMZO-IWL9-zC30`.
+1. Start the dev server: `yarn dev` 
+1. Visit http://localhost:3000/[sheetId]
 1. Push to deploy through Vercel.
 
 ### Bugs
 
 * Correct the spacing issues for wide boxes
-* Switch from cached static pages to SWR with server-side props
 
 ### Future Features
 
-* Security via URL obscurity - no default workbook when you go to the homepage
-* Filter by manager
-* Filter by program
+* Find-as-you-type on the org chart or filter dropdowns
 * A 'notes' field per person, displayed in a tooltip/popup (e.g "on maternity leave until June" or "pitching in on the Skystar project")
 * New data model (see below) + better security
 * Zoom from the center of the viewport instead of the top left
 * More usable zoom buttons
 * Portrait/landscape layout switcher
 * When the Google Sheet can't be parsed, include more information about why
-* Animations as you switch views
+* Animations as you switch views or change filters
 
 ### Maybe Future Features
+
 * View changes over time (but you could use new sheets for that, and it's duplicative with 10kft)
 * Percentages of allocation (but that never really works anyway)
 
