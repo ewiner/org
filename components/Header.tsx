@@ -3,6 +3,8 @@ import {Transition} from '@headlessui/react'
 import Link from 'next/link'
 import DraftMenu from "./DraftMenu";
 import {useRouter} from "next/router";
+import Icon from "@mdi/react";
+import {mdiOpenInNew} from "@mdi/js";
 
 export type HeaderProps = {
     currentUrl: string,
@@ -25,6 +27,12 @@ export default function Header({currentUrl, workbook, sheetId, version}: HeaderP
         pathname: `/[workbook]/[sheetId]/${link.url}`,
         query: router.query
     })
+
+    const sourceLink = (
+        <a href={`https://docs.google.com/spreadsheets/d/${encodeURIComponent(workbook)}`} target="_blank">
+            Source Data <Icon path={mdiOpenInNew} title="External" className="h-4 inline-block"/>
+        </a>
+    )
 
     return (
         <>
@@ -72,6 +80,10 @@ export default function Header({currentUrl, workbook, sheetId, version}: HeaderP
                         </div>
                         <div
                             className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                            <div
+                                className="ml-3 mr-3 hidden sm:block text-gray-300 hover:border-gray-300 border-transparent border-b text-sm font-medium">
+                                {sourceLink}
+                            </div>
                             <div className="ml-3 relative">
                                 <div>
                                     <button onClick={() => setDraftMenuOpen(!draftMenuOpen)}
@@ -117,6 +129,10 @@ export default function Header({currentUrl, workbook, sheetId, version}: HeaderP
                                 </a>
                             </Link>
                         ))}
+                        <div
+                            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                            {sourceLink}
+                        </div>
                     </div>
                 </div>
             </nav>

@@ -35,7 +35,7 @@ export default function DraftMenu({closeMenu, sheetId, workbook, currentUrl}: Pr
                         </a>
                     </Link>
                 )) :
-                <>Loading...</>
+                <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Loading...</div>
             }
         </div>
     )
