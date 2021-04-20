@@ -29,6 +29,7 @@ export default async function fetchPeople(workbook: string, sheetId: number): Pr
     const people = sheet.rows
         .filter(o => !o.hide)
         .filter(o => isRawPerson(o))
+        .filter(o => o.person || o.opening)
         .map(personData => {
             // rename the "person" column to "name"
             const {person, ...rest} = personData
