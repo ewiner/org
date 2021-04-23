@@ -71,7 +71,7 @@ export default function Filters({setGlobalFilter, peopleData, showFilterOptions,
         setShowFilterOptions(false)
         // hack: if you do this too quick, the router.push() calls interfere with each other
         // so we use setTimeout() to space out the setSetting() calls
-        subfilterSettings.forEach((f, i) => setTimeout(() => f.setSetting(null), i * 16))
+        subfilterSettings.forEach((f, i) => setTimeout(() => f.setSetting(null), i * 128))
     }
 
     useEffect(() => {

@@ -1261,6 +1261,11 @@ domutils@^2.4.2:
     domelementtype "^2.0.1"
     domhandler "^4.0.0"
 
+downloadjs@^1.4.7:
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/downloadjs/-/downloadjs-1.4.7.tgz#f69f96f940e0d0553dac291139865a3cd0101e3c"
+  integrity sha1-9p+W+UDg0FU9rCkROYZaPNAQHjw=
+
 ecc-jsbn@~0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"
@@ -1702,6 +1707,11 @@ html-tags@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/html-tags/-/html-tags-3.1.0.tgz#7b5e6f7e665e9fb41f30007ed9e0d41e97fb2140"
   integrity sha512-1qYz89hW3lFDEazhjW0yVAV87lw8lVkrJocr72XmBkMKsoSVJCQx3W8BXsC7hO2qAt8BoVjYjtAcZ9perqGnNg==
+
+html-to-image@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/html-to-image/-/html-to-image-1.6.1.tgz#e4078a8586eec7e0ba0cdf8eb59cff31d027a290"
+  integrity sha512-gvIW2pRXYa44NBoHna9KW185x1xPzYjHJ6FzrXp3xFOm+jUB+2QoHgbmWtLAI/bk1jJGsCHEo1OLnAeTPUxsTA==
 
 htmlparser2@5.0.1:
   version "5.0.1"

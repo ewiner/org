@@ -13,8 +13,9 @@ function Leafs({leafs}: { leafs: React.ReactElement[] }) {
                 {leafs.map((leaf, idX) => (
                     <li key={leaf.key} className="relative">
                         <div className="-ml-4 mt-3 absolute border-gray-400 border-t-2 w-4 "/>
-                        {idX == leafs.length - 1 ? <div
-                            className="-ml-6 mt-3-plus-border-2 h-full absolute w-0 border-gray-50 border-l-8 "/> : null}
+                        {idX == leafs.length - 1 ?
+                            <div className="-ml-6 mt-3-plus-border-2 h-full absolute w-4 bg-gray-50"/> :
+                            null}
                         {leaf}
                     </li>
                 ))}
@@ -24,7 +25,12 @@ function Leafs({leafs}: { leafs: React.ReactElement[] }) {
 }
 
 // inspired by https://github.com/ravisankarchinnam/tailwindcss-react-flowchart/
-export default function Branch({leafChildren, nonLeafChildren}: BranchProps) {
+export default function Branch(
+{
+    leafChildren, nonLeafChildren
+}
+: BranchProps)
+{
 
     // append all the leaf members as a single array at the end of the non-leaf members, e.g. [NL1, NL2, [L1, L2, L3]]
     const branches = [...nonLeafChildren, ...(leafChildren.length > 0 ? [leafChildren] : [])]
@@ -54,5 +60,6 @@ export default function Branch({leafChildren, nonLeafChildren}: BranchProps) {
             })}
         </ul>
     );
-};
+}
+;
 

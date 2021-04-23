@@ -1,10 +1,11 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
+import React, {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import Icon from "@mdi/react";
-import {mdiRefresh} from "@mdi/js";
+import {mdiClipboardTextMultipleOutline, mdiFileDownloadOutline, mdiRefresh} from "@mdi/js";
 import {Filter} from "src/types";
 import {ProcessedPeople} from "../../src/processData";
 import Filters from "./Filters";
-
+import * as htmlToImage from 'html-to-image';
+import download from 'downloadjs';
 
 type Props = {
     isRefreshing: boolean,
@@ -47,6 +48,40 @@ export default function Chart(props: Props) {
     const [{zoomCss, zoomClass}, {zoomIn, zoomOut, resetZoom}] = useZoom("margin-left")
     const [showFilterOptions, setShowFilterOptions] = useState(false)
 
+    const mainArea = useRef()
+
+    const [isDownloading, setDownloading] = useState(false)
+    const [isCopying, setCopying] = useState(false)
+
+    useEffect(() => {
+        if (isDownloading) {
+            (async () => {
+                try {
+                    const dataUrl = await htmlToImage.toPng(mainArea.current)
+                    download(dataUrl, `Org Chart - ${new Date().toISOString().slice(0, 10)}.png`)
+                } finally {
+                    setDownloading(false)
+                }
+            })()
+        }
+    }, [isDownloading])
+
+    useEffect(() => {
+        if (isCopying) {
+            (async () => {
+                try {
+                    const dataUrl = await htmlToImage.toPng(mainArea.current)
+                    const fetchResponse = await fetch(dataUrl)
+                    const pngBlob = await fetchResponse.blob()
+                    // @ts-ignore doesn't know about ClipboardItem yet
+                    await navigator.clipboard.write([new ClipboardItem({'image/png': pngBlob})])
+                } finally {
+                    setCopying(false)
+                }
+            })()
+        }
+    }, [isCopying])
+
     return (
         <>
             {React.Children.count(children) === 0 ?
@@ -69,6 +104,21 @@ export default function Chart(props: Props) {
                                 <Icon spin={isRefreshing} path={mdiRefresh} title="Refresh"
                                       className="h-4 inline-block"/>{" "}
                             </button>
+
+                            <button type="button"
+                                    className="text-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xl font-bold bg-white hover:bg-gray-50 focus:outline-none outline-none"
+                                    onClick={() => setDownloading(true)}>
+                                <Icon spin={isDownloading} path={mdiFileDownloadOutline} title="Download Image"
+                                      className="h-4 inline-block"/>{" "}
+                            </button>
+                            <button type="button"
+                                    className="text-center mb-4 px-4 py-2 border border-t-0 border-gray-300 rounded-md shadow-sm text-xl font-bold bg-white hover:bg-gray-50 focus:outline-none outline-none"
+                                    onClick={() => setCopying(true)}>
+                                <Icon spin={isCopying} path={mdiClipboardTextMultipleOutline}
+                                      title="Export Image to Clipboard"
+                                      className="h-4 inline-block"/>{" "}
+                            </button>
+
                             <button type="button"
                                     className="text-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xl font-bold bg-white hover:bg-gray-50 focus:outline-none outline-none"
                                     onClick={zoomIn}>+
@@ -84,6 +134,7 @@ export default function Chart(props: Props) {
 
                         </div>
                         <div
+                            ref={mainArea}
                             className={`flex p-4 pl-24 text-gray-800 ${showFilterOptions ? "ml-48" : "ml-0"} ${zoomClass}`}
                             style={zoomCss}>
                             {children}
