@@ -100,7 +100,7 @@ export default function Chart(props: Props) {
                     </div>
                 ) :
                 (<>
-                        <div className={`fixed z-40 ml-4 grid grid-cols-1 ${showFilterOptions ? "" : "group"}`}>
+                        <div className={`fixed z-40 ml-4 pb-4 grid grid-cols-1 ${showFilterOptions ? "" : "group"}`}>
                             <Filters
                                 setGlobalFilter={setGlobalFilter}
                                 peopleData={peopleData}

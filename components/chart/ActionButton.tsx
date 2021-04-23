@@ -29,11 +29,11 @@ export default function ActionButton(props: Props) {
             <div className="inline-block w-12 pr-1 mx-auto text-center text-xl font-bold">
                 {icon}
             </div>
-            <div className="
-                mr-4 inline-block text-xs align-middle
-                transition-opacity group-hover:delay-150 opacity-0 group-hover:opacity-100
-                ">
-                {children}
+            <div
+                className="mr-4 inline-block text-xs align-middle transition-all delay-150 group-hover:delay-0 invisible group-hover:visible">
+                <div className="transition-opacity group-hover:delay-150 opacity-0 group-hover:opacity-100">
+                    {children}
+                </div>
             </div>
         </button>
     )

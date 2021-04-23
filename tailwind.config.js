@@ -12,9 +12,9 @@ module.exports = {
   },
   variants: {
     extend: {
-      display: ['group-hover'],
       width: ['group-hover'],
-      transitionDelay: ['group-hover']
+      transitionDelay: ['group-hover'],
+      visibility: ['group-hover']
     },
   },
   plugins: [],
