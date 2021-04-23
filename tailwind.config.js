@@ -11,7 +11,11 @@ module.exports = {
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      display: ['group-hover'],
+      width: ['group-hover'],
+      transitionDelay: ['group-hover']
+    },
   },
   plugins: [],
 }

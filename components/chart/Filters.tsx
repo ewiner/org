@@ -5,6 +5,7 @@ import {ProcessedPeople} from "../../src/processData";
 import FilterSettings, {FilterDropdown} from "./FilterSettings";
 import Icon from "@mdi/react";
 import {mdiFilter} from "@mdi/js";
+import ActionButton from "./ActionButton";
 
 function useFilter(queryPath: string, makeFilter: (setting: string | null) => Filter) {
     const router = useRouter()
@@ -121,12 +122,17 @@ export default function Filters({setGlobalFilter, peopleData, showFilterOptions,
                     setting={statusFilter.setting} setSetting={statusFilter.setSetting}
                 />
             </FilterSettings>
-            <button type="button"
-                    className={`${showFilterOptions ? "bg-gray-100 hover:bg-gray-200" : "bg-white hover:bg-gray-50"} text-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xl font-bold focus:outline-none outline-none`}
-                    onClick={toggleShowFilterOptions}>
-                <Icon path={mdiFilter} title="Filters" className="h-4 inline-block"/>
-                {numFilters > 0 ? <span className="absolute text-xs">{numFilters}</span> : null}
-            </button>
+            <ActionButton
+                onClick={toggleShowFilterOptions}
+                topOfGroup={true}
+                pressed={showFilterOptions}
+                icon={<>
+                    <Icon path={mdiFilter} title="Filters" className="h-4 inline-block"/>
+                    {numFilters > 0 ? <span className="absolute text-xs">{numFilters}</span> : null}
+                </>}
+            >
+                Filters
+            </ActionButton>
         </>
     )
 }

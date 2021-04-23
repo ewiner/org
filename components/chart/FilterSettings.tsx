@@ -116,7 +116,7 @@ type Props = {
 }
 export default function FilterSettings({visible, children, resetFilters}: Props) {
     const panel = (
-        <div className="absolute ml-16 p-4 w-64 border border-gray-300 rounded-md shadow-sm text-md bg-white">
+        <div className="absolute mt-4 ml-16 p-4 w-64 border border-gray-300 rounded-md shadow-sm text-md bg-white">
             <button className="text-indigo-600 hover:text-indigo-900 pb-6 block text-sm" onClick={resetFilters}>Reset
                 filters
             </button>
