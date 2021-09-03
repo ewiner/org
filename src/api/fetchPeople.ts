@@ -23,6 +23,7 @@ export type PeopleData = {
 export default async function fetchPeople(workbook: string, sheetId: number): Promise<PeopleData | null> {
     const sheet = await fetchGsheet(workbook, sheetId)
     if (sheet.result !== "success") {
+        console.log(`Couldn't retrieve workbook ${workbook}:\n${JSON.stringify(sheet.result, undefined, 2)}`)
         return null
     }
     const version = sheet.sheetName

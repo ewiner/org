@@ -5,10 +5,12 @@ import DraftMenu from "./DraftMenu";
 import {useRouter} from "next/router";
 import Icon from "@mdi/react";
 import {mdiOpenInNew} from "@mdi/js";
+import { formatDistanceToNow } from "date-fns";
 
 export type HeaderProps = {
     currentUrl: string,
-    workbook: string
+    workbook: string,
+    updated?: string,
     sheetId: number,
     version: string
 }
@@ -18,7 +20,7 @@ const links = [
     {url: "program", text: "Program View"}
 ]
 
-export default function Header({currentUrl, workbook, sheetId, version}: HeaderProps) {
+export default function Header({currentUrl, workbook, updated, sheetId, version}: HeaderProps) {
     const router = useRouter();
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
     const [draftMenuOpen, setDraftMenuOpen] = useState(false);
@@ -30,7 +32,8 @@ export default function Header({currentUrl, workbook, sheetId, version}: HeaderP
 
     const sourceLink = (
         <a href={`https://docs.google.com/spreadsheets/d/${encodeURIComponent(workbook)}`} target="_blank">
-            Source Data <Icon path={mdiOpenInNew} title="External" className="h-4 inline-block"/>
+            Source Data <Icon path={mdiOpenInNew} title="External" className="h-4 inline-block"/><br/>
+            {updated && formatDistanceToNow(Date.parse(updated))}
         </a>
     )
 
