@@ -109,7 +109,7 @@ type RoleIconProps = BadgeProps & {
 }
 
 export function RoleBadge({role, colored, ...others}: RoleIconProps) {
-    // colors from https://colorbrewer2.org/#type=qualitative&scheme=Pastel1&n=8
+    // colors from https://colorbrewer2.org/#type=qualitative&scheme=Set3&n=10
     const render = (txt, color) => {
         const style = colored ? stylesForColor(color) : {}
         return <Badge title={role} style={style} {...others}>{txt}</Badge>
@@ -121,6 +121,10 @@ export function RoleBadge({role, colored, ...others}: RoleIconProps) {
             return render("BE", '#b3cde3')
         case "Frontend":
             return render("FE", '#ccebc5')
+        case "Fullstack":
+            return render("FS", '#d9d9d9')
+        case "Smart Contract":
+            return render("SC", '#bc80bd')
         case "QA":
             return render("QA", '#decbe4')
         case "Product":
