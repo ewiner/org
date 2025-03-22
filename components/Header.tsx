@@ -72,10 +72,12 @@ export default function Header({currentUrl, workbook, updated, sheetId, version}
                             <div className="hidden sm:block sm:ml-6">
                                 <div className="flex space-x-4">
                                     {links.map(link => (
-                                        <Link key={link.url} href={href(link)}>
-                                            <a className={`${link.url === currentUrl ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"} px-3 py-2 rounded-md text-sm font-medium`}>
-                                                {link.text}
-                                            </a>
+                                        <Link 
+                                            key={link.url} 
+                                            href={href(link)}
+                                            className={`${link.url === currentUrl ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"} px-3 py-2 rounded-md text-sm font-medium`}
+                                        >
+                                            {link.text}
                                         </Link>
                                     ))}
                                 </div>
@@ -126,10 +128,12 @@ export default function Header({currentUrl, workbook, updated, sheetId, version}
                 <div className={`${mobileNavOpen ? "block" : "hidden"} sm:hidden`}>
                     <div className="px-2 pt-2 pb-3 space-y-1">
                         {links.map(link => (
-                            <Link key={link.url} href={href(link)}>
-                                <a className={`${link.url === currentUrl ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"} block px-3 py-2 rounded-md text-base font-medium`}>
-                                    {link.text}
-                                </a>
+                            <Link 
+                                key={link.url} 
+                                href={href(link)}
+                                className={`${link.url === currentUrl ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"} block px-3 py-2 rounded-md text-base font-medium`}
+                            >
+                                {link.text}
                             </Link>
                         ))}
                         <div

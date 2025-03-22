@@ -1,8 +1,8 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'media',
   theme: {
     fontFamily: {
       ...defaultTheme.fontFamily,
@@ -16,6 +16,6 @@ module.exports = {
       transitionDelay: ['group-hover'],
       visibility: ['group-hover']
     },
-  },
+  },  
   plugins: [],
 }

@@ -24,8 +24,8 @@ function MembersBadges({members}: { members: Person[] }) {
                 {members.map((person, idx) => {
                     const {program, subprogram} = person
                     return (
-                        <li key={person.name || person.opening} className="inline-block">
-                            <NumberBadge idx={idx + 1} className={`${bgColor(person)}`}/>
+                        <li key={person.name || person.opening} className={`inline-block ${bgColor(person)}`}>
+                            <NumberBadge idx={idx + 1} />
                             {showPrograms && (program ?
                                     <ProgramBadge value={program} hasBadgeAbove={true}/> :
                                     <EmptyBadge hasBadgeAbove={true}/>

@@ -12,7 +12,7 @@ type Props = {
     currentUrl: string
 }
 
-const fetcher = (url) => fetch(url).then(res => res.json())
+const fetcher: (url: string) => Promise<VersionData> = (url) => fetch(url).then(res => res.json())
 
 export default function DraftMenu({closeMenu, sheetId, workbook, currentUrl}: Props) {
     const {data, isValidating} = useSWR<VersionData>(`/api/versions/${encodeURIComponent(workbook)}`, fetcher)
@@ -27,12 +27,11 @@ export default function DraftMenu({closeMenu, sheetId, workbook, currentUrl}: Pr
             </span>
             {data ?
                 data.sheetNames.map((version, idx) => (
-                    <Link key={idx} href={`/${workbook}/${idx + 1}/${currentUrl}`}>
-                        <a onClick={closeMenu}
-                           className={`${sheetId === idx + 1 ? "font-bold" : ""} block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100`}
-                           role="menuitem">
-                            {version}
-                        </a>
+                    <Link key={idx} href={`/${workbook}/${idx + 1}/${currentUrl}`}
+                          onClick={closeMenu}
+                          className={`${sheetId === idx + 1 ? "font-bold" : ""} block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100`}
+                          role="menuitem">
+                        {version}
                     </Link>
                 )) :
                 <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Loading...</div>

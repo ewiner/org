@@ -15,14 +15,14 @@ type Props = {
     makeChartData: (people: ProcessedPeople) => React.ReactNode
 }
 
-const fetcher = (url) => fetch(url).then(res => res.json())
+const fetcher = (url: string) => fetch(url).then(res => res.json())
 
 export default function ChartPage({initialData, currentUrl, makeChartData}: Props) {
     const router = useRouter()
     const {workbook, sheetId} = parseParams(router.query)
 
-    const { data, isValidating, revalidate } = useSWR<PeopleData>(`/api/data/${encodeURIComponent(workbook)}/${encodeURIComponent(sheetId)}`, fetcher, {
-        initialData: initialData,
+    const { data, isValidating, mutate } = useSWR<PeopleData>(`/api/data/${encodeURIComponent(workbook)}/${encodeURIComponent(sheetId)}`, fetcher, {
+        fallbackData: initialData,
     })
     const {people, version} = data
 
@@ -32,11 +32,11 @@ export default function ChartPage({initialData, currentUrl, makeChartData}: Prop
     return (
         <>
             <Head>
-                <title>Org Chart - {version}</title>
+                <title>{`Org Chart - ${version}`}</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
             <Header currentUrl={currentUrl} workbook={workbook} sheetId={sheetId} version={version}/>
-            <Chart isRefreshing={isValidating} refresh={revalidate} setGlobalFilter={setFilter} peopleData={peopleData}>
+            <Chart isRefreshing={isValidating} refresh={mutate} setGlobalFilter={setFilter} peopleData={peopleData}>
                 {makeChartData(peopleData)}
             </Chart>
         </>

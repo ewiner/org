@@ -9,7 +9,8 @@ type BadgeProps = {
     hasBadgeAbove?: boolean,
     hasBadgeLeft?: boolean,
     className?: string,
-    style?: CSS.Properties
+    style?: CSS.Properties,
+    children?: React.ReactNode
 }
 
 const Badge: React.FunctionComponent<BadgeProps> = (
@@ -159,7 +160,7 @@ export function TeamLeadRoleBadge({
 
 export function NumberBadge({idx, className = "", ...badgeProps}: { idx: number } & BadgeProps) {
     return (
-        <Badge title={idx.toString()} className={`${className}`} {...badgeProps} >
+        <Badge title={idx.toString()} className={className} {...badgeProps} >
             {idx}
         </Badge>
     );

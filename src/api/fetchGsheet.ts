@@ -10,17 +10,18 @@ type DocResponse = WorkbookNotFound | WorkbookNotAccessible | DocSuccess
 type GsheetResponse = WorkbookNotFound | WorkbookNotAccessible | SheetNotFound | SheetSuccess
 
 export async function fetchDoc(workbook: string): Promise<DocResponse> {
-    const doc = new GoogleSpreadsheet(workbook)
-    await doc.useApiKey(process.env.GOOGLE_API_KEY)
+    const doc = new GoogleSpreadsheet(workbook, {
+        apiKey: process.env.GOOGLE_API_KEY
+    })
 
     try {
         await doc.loadInfo()
         return {result: "success", doc}
     } catch (e) {
-        if (e.response.status == 404) {
+        if (e.response && e.response.status == 404) {
             console.log(`Spreadsheet ${workbook} does not exist.`)
             return {result: "workbook-not-found"}
-        } else if (e.response.status == 403) {
+        } else if (e.response && e.response.status == 403) {
             console.log(`Spreadsheet ${workbook} is not publicly viewable.`)
             return {result: "workbook-not-accessible"}
         } else {
@@ -48,10 +49,8 @@ export default async function fetchGsheet(workbook: string, sheetid: number): Pr
     // conform to the Google Sheets v3 API, in which field names were lowercased and had no whitespace
     const lowercaseRows = rows.map(row => {
         const lowercaseRow = {}
-        for (const [field, value] of Object.entries(row)) {
-            if (!field.startsWith("_")) {
-                lowercaseRow[field.replace(/\s+/g, '').toLowerCase()] = value || ''
-            }
+        for (const [field, value] of Object.entries(row.toObject())) {
+            lowercaseRow[field.replace(/\s+/g, '').toLowerCase()] = value || ''
         }
         return lowercaseRow
     })

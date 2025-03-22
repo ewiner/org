@@ -13,7 +13,7 @@ export default function ChartNode({inline, children, leafChildren, nonLeafChildr
             <div className="flex flex-col w-full">
                 <div className={`flex ${inline ? "mb-2" : "justify-center"}`}>
                     <div
-                        className={`bg-white ${className} shadow border border-gray-400 rounded-md p-2`}
+                        className={`${className} shadow border border-gray-400 rounded-md p-2`}
                         style={{minWidth: "12rem"}}>
                         {children}
                     </div>
