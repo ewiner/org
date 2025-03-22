@@ -136,6 +136,8 @@ export function RoleBadge({role, colored, ...others}: RoleIconProps) {
             return render("UI", '#e5d8bd')
         case "UX":
             return render("UX", '#fddaec')
+        case "SRE":
+            return render("SRE", '#a8ddb5')
         case "":
             return null
         default:
