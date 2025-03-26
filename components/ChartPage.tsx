@@ -8,6 +8,7 @@ import Chart from "./chart/Chart";
 import useSWR from "swr";
 import Head from "next/head";
 import processData, {ProcessedPeople} from "../src/processData";
+import SkippedRowsDisplay from "./SkippedRowsDisplay";
 
 type Props = {
     initialData: PeopleData,
@@ -24,7 +25,7 @@ export default function ChartPage({initialData, currentUrl, makeChartData}: Prop
     const { data, isValidating, mutate } = useSWR<PeopleData>(`/api/data/${encodeURIComponent(workbook)}/${encodeURIComponent(sheetId)}`, fetcher, {
         fallbackData: initialData,
     })
-    const {people, version} = data
+    const {people, version, skippedRows} = data
 
     const [filter, setFilter] = useState<Filter>(() => () => true)
     const peopleData = processData(people, filter)
@@ -39,6 +40,7 @@ export default function ChartPage({initialData, currentUrl, makeChartData}: Prop
             <Chart isRefreshing={isValidating} refresh={mutate} setGlobalFilter={setFilter} peopleData={peopleData}>
                 {makeChartData(peopleData)}
             </Chart>
+            <SkippedRowsDisplay skippedRows={skippedRows || []} />
         </>
     )
 }
