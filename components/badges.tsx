@@ -57,12 +57,27 @@ const MANAGER_INITIALS_OVERRIDE = {
 const SKIPPED_FOR_ACRONYM = ["/", "and", "&"]
 
 function acronymize(value: string) {
-    return value
+    // If the value is already a 1-3 letter acronym (all uppercase), keep it as is
+    if (/^[A-Z]{1,3}$/.test(value)) {
+        return value;
+    }
+
+    const words = value
         .split(/[\s\/]+/)
-        .filter(word => !SKIPPED_FOR_ACRONYM.includes(word.toLowerCase()))
-        .map(word => word[0])
-        .join('')
-        .toUpperCase()
+        .filter(word => !SKIPPED_FOR_ACRONYM.includes(word.toLowerCase()));
+    
+    const result = words.map(word => {
+        // For camelCase/PascalCase words (like DevRel)
+        const capitals = word.match(/[A-Z]/g);
+        if (capitals && capitals.length > 1 && /[a-z]/.test(word)) {
+            // If multiple capitals with lowercase, use the capitals (e.g., DevRel → DR)
+            return capitals.join('');
+        }
+        // For all other cases, use the first letter
+        return word[0];
+    });
+    
+    return result.join('').toUpperCase();
 }
 
 function badgeMaker(colors: string[], overrides: { [key: string]: string }) {
