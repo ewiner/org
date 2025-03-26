@@ -84,6 +84,50 @@ export default function Chart(props: Props) {
     const [isDownloading, setDownloading] = useState(false)
     const [isCopying, setCopying] = useState(false)
     const [finishedCopying, setFinishedCopying] = useState(false)
+    
+    // Handle double-click and shift-double-click for zooming
+    const handleDoubleClick = (e: React.MouseEvent) => {
+        if (e.shiftKey) {
+            zoomOut();
+        } else {
+            zoomIn();
+        }
+    };
+    
+    // Commented out pinch-to-zoom functionality for now
+    // Keeping the code for potential future use
+    /*
+    useEffect(() => {
+        if (!mainArea.current) return;
+        
+        // Handle wheel events for pinch gestures on trackpad
+        const handleWheel = (e: WheelEvent) => {
+            // Check if this is a pinch gesture (ctrl key is pressed during trackpad pinch)
+            if (e.ctrlKey) {
+                e.preventDefault();
+                
+                // Get the pointer position
+                const rect = mainArea.current.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Use a smaller zoom factor for smoother zooming
+                // Negative deltaY means pinch out (zoom in), positive means pinch in (zoom out)
+                const zoomFactor = e.deltaY < 0 ? 1.03 : 0.97;
+                
+                // Apply zoom centered on pointer position
+                setSpecificZoom(currentZoom.current * zoomFactor, false, x, y);
+            }
+        };
+        
+        const element = mainArea.current;
+        element.addEventListener('wheel', handleWheel, { passive: false });
+        
+        return () => {
+            element.removeEventListener('wheel', handleWheel);
+        };
+    }, [mainArea.current]);
+    */
 
     // Function to calculate and set the appropriate zoom level
     const fitChartToView = (isInitialZoom: boolean = false) => {
@@ -215,8 +259,9 @@ export default function Chart(props: Props) {
                         <div
                             ref={mainArea}
                             className={`flex p-4 pl-24 text-gray-800 ${showFilterOptions ? "ml-48" : "ml-0"} ${zoomClass}`}
-                            style={zoomCss}>
-                            <div ref={chartContent}>
+                            style={zoomCss}
+                            onDoubleClick={handleDoubleClick}>
+                            <div ref={chartContent} className="flex">
                                 {children}
                             </div>
                         </div>
