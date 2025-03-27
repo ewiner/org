@@ -8,7 +8,8 @@ export type Person = {
     program: string,
     subprogram: string,
     manager: string,
-    teamleadrole: "" | LeadPosition
+    teamleadrole: "" | LeadPosition,
+    notes?: string
 }
 
 export type FilterPerson = Person & {

@@ -1,9 +1,11 @@
 import React from "react";
 import {FilterPerson, Hierarchy, Person} from "../src/types";
-import {mdiFlash} from '@mdi/js';
+import {mdiFlash, mdiNoteOutline} from '@mdi/js';
+import Icon from "@mdi/react";
 import {EmptyBadge, IconBadge, ManagerBadge, NumberBadge, ProgramBadge, RoleBadge, SubprogramBadge} from "./badges";
 import ChartNode from "./chart/ChartNode";
 import {partition} from "lodash";
+import Tooltip from "./Tooltip";
 
 type Props = {
     person: Hierarchy<FilterPerson>,
@@ -48,7 +50,7 @@ export function anyoneVisible(person: Hierarchy<FilterPerson>) {
 }
 
 export default function PersonView({person, inline, style}: Props) {
-    const {members, icrole, manager, jobtitle, name, program, opening, subprogram} = person;
+    const {members, icrole, manager, jobtitle, name, program, opening, subprogram, notes} = person;
     const teamRole = parseTeamRole(person)
 
     const [leafMembers, nonLeafMembers]: [Hierarchy<FilterPerson>[], Hierarchy<FilterPerson>[]] = partition(
@@ -92,6 +94,11 @@ export default function PersonView({person, inline, style}: Props) {
             </div>}
         </>
     )
+
+    const notesIcon = <span className="ml-1 text-gray-400 group-hover:text-gray-600 transition-colors duration-200">
+        <Icon path={mdiNoteOutline} size={0.6} className="inline-block" />
+    </span>
+
     return (
         <ChartNode
             nonLeafChildren={nonLeafMembers.map(p =>
@@ -101,32 +108,34 @@ export default function PersonView({person, inline, style}: Props) {
                 <PersonView style={style} key={p.name || p.opening} person={p} inline={true}/>
             )}
             inline={inline}
-            className={bgColor(person)}
+            className={`${bgColor(person)} group`}
         >
-            <div className="mb-2">
-                <div className="float-right">
-                    <RoleBadge role={icrole} colored={style === "program"}/>
+            <Tooltip content={notes} position="bottom" maxWidth="max-w-sm">
+                <div className="mb-2">
+                    <div className="float-right">
+                        <RoleBadge role={icrole} colored={style === "program"}/>
+                    </div>
+
+                    {name && <p>{name} {notes && notesIcon}</p>}
+                    {opening &&
+                      <p title={opening}
+                         className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
+                          {opening} {notes && !name && notesIcon}
+                      </p>}
+                    {showJobTitle &&
+                    <p title={jobtitle}
+                       className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
+                        {jobtitle}
+                    </p>}
                 </div>
-                <p>{name}</p>
-                {opening &&
-                <p title={opening}
-                   className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
-                    {opening}
-                </p>}
-                {showJobTitle &&
-                <p title={jobtitle}
-                   className="text-xs overflow-ellipsis overflow-hidden whitespace-nowrap">
-                    {jobtitle}
-                </p>}
-            </div>
-            <div>
-                {badgesSection}
-            </div>
-            {members.length > 0 && <MembersBadges members={members}/>}
+                <div>
+                    {badgesSection}
+                </div>
+                {members.length > 0 && <MembersBadges members={members}/>}
+            </Tooltip>
         </ChartNode>
     );
-}
-;
+};
 
 function parseTeamRole(person: Person) {
     let teamRole = null

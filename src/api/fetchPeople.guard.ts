@@ -20,6 +20,8 @@ export function isRawPerson(obj: any, _argumentName?: string): obj is RawPerson 
             obj.teamleadrole === "Program Role Lead" ||
             obj.teamleadrole === "Subprogram Role Lead" ||
             obj.teamleadrole === "Program Tech Lead" ||
-            obj.teamleadrole === "Subprogram Tech Lead")
+            obj.teamleadrole === "Subprogram Tech Lead") &&
+        (obj.notes === undefined ||
+            typeof obj.notes === "string")
     )
 }

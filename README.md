@@ -23,7 +23,6 @@ An org chart visualizer.
 * Zoom from the center of the viewport instead of the top left
 * More usable zoom buttons
 * Portrait/landscape layout switcher
-* When the Google Sheet can't be parsed, include more information about why
 * Animations as you switch views or change filters
 
 ### Maybe Future Features

@@ -12,7 +12,8 @@ export type RawPerson = {
     icrole: string,
     program: string,
     subprogram: string,
-    teamleadrole: "" | LeadPosition
+    teamleadrole: "" | LeadPosition,
+    notes?: string
 }
 
 export type SkippedRow = {
