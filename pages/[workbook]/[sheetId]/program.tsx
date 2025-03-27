@@ -2,7 +2,7 @@ import ProgramView from "components/ProgramView";
 import React from "react";
 import {serverProps} from "src/serverProps";
 import {InferGetServerSidePropsType} from "next";
-import ChartPage from "components/ChartPage";
+import ChartPage, { ChartDataResult } from "components/ChartPage";
 import {ProcessedPeople} from "src/processData";
 
 export const getServerSideProps = serverProps
@@ -11,8 +11,8 @@ export default function ProgramsView(props: InferGetServerSidePropsType<typeof g
     return <ChartPage initialData={props} currentUrl="program" makeChartData={makeChartData}/>
 }
 
-function makeChartData(people: ProcessedPeople) {
-    return people.byProgram.map(program => {
+function makeChartData(people: ProcessedPeople): ChartDataResult {
+    const nodes = people.byProgram.map(program => {
         const filteredSubprograms = program.subprograms
             .filter(s => s.members.find(p => p.visible) !== undefined)
         const anyoneVisible = program.members.find(p => p.visible) !== undefined
@@ -27,4 +27,9 @@ function makeChartData(people: ProcessedPeople) {
         }
         return <ProgramView key={program.name} program={filteredProgram}/>
     })
+    
+    return {
+        nodes,
+        skippedRows: people.skippedRows
+    }
 }

@@ -1,4 +1,4 @@
-import {PeopleData} from "../src/api/fetchPeople";
+import {PeopleData, SkippedRow} from "../src/api/fetchPeople";
 import React, {useState} from "react";
 import {useRouter} from "next/router";
 import parseParams from "../src/parseParams";
@@ -10,10 +10,16 @@ import Head from "next/head";
 import processData, {ProcessedPeople} from "../src/processData";
 import SkippedRowsDisplay from "./SkippedRowsDisplay";
 
+// Define the return type for makeChartData
+export type ChartDataResult = {
+    nodes: React.ReactNode;
+    skippedRows: SkippedRow[];
+}
+
 type Props = {
     initialData: PeopleData,
     currentUrl: string,
-    makeChartData: (people: ProcessedPeople) => React.ReactNode
+    makeChartData: (people: ProcessedPeople) => ChartDataResult
 }
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
@@ -25,10 +31,16 @@ export default function ChartPage({initialData, currentUrl, makeChartData}: Prop
     const { data, isValidating, mutate } = useSWR<PeopleData>(`/api/data/${encodeURIComponent(workbook)}/${encodeURIComponent(sheetId)}`, fetcher, {
         fallbackData: initialData,
     })
-    const {people, version, skippedRows} = data
+    const {people, version, skippedRows = []} = data
 
     const [filter, setFilter] = useState<Filter>(() => () => true)
     const peopleData = processData(people, filter)
+
+    // Get chart data and additional skipped rows from makeChartData
+    const { nodes, skippedRows: additionalSkippedRows } = makeChartData(peopleData)
+    
+    // Combine all skipped rows
+    const allSkippedRows = [...skippedRows, ...additionalSkippedRows]
 
     return (
         <>
@@ -38,9 +50,9 @@ export default function ChartPage({initialData, currentUrl, makeChartData}: Prop
             </Head>
             <Header currentUrl={currentUrl} workbook={workbook} sheetId={sheetId} version={version}/>
             <Chart isRefreshing={isValidating} refresh={mutate} setGlobalFilter={setFilter} peopleData={peopleData}>
-                {makeChartData(peopleData)}
+                {nodes}
             </Chart>
-            <SkippedRowsDisplay skippedRows={skippedRows || []} />
+            <SkippedRowsDisplay skippedRows={allSkippedRows} />
         </>
     )
 }

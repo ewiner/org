@@ -18,7 +18,6 @@ An org chart visualizer.
 ### Future Features
 
 * Find-as-you-type on the org chart or filter dropdowns
-* A 'notes' field per person, displayed in a tooltip/popup (e.g "on maternity leave until June" or "pitching in on the Skystar project")
 * New data model (see below) + better security
 * Zoom from the center of the viewport instead of the top left
 * More usable zoom buttons

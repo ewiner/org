@@ -9,7 +9,8 @@ export type Person = {
     subprogram: string,
     manager: string,
     teamleadrole: "" | LeadPosition,
-    notes?: string
+    notes?: string,
+    rowNumber: number
 }
 
 export type FilterPerson = Person & {

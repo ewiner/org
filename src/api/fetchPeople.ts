@@ -24,7 +24,7 @@ export type SkippedRow = {
 
 export type PeopleData = {
     version: string,
-    people: Person[],
+    people: (Person & {rowNumber: number})[],
     skippedRows: SkippedRow[]
 }
 
@@ -38,7 +38,7 @@ export default async function fetchPeople(workbook: string, sheetId: number): Pr
     const skippedRows: SkippedRow[] = []
     
     // Process rows and track skipped ones
-    const people = sheet.rows.reduce((validPeople: any[], row: any, index: number) => {
+    const people = sheet.rows.reduce((validPeople: Person[], row: any, index: number) => {
         // Add 2 to index because spreadsheet rows are 1-indexed and we have a header row
         const rowNumber = index + 2;
         
@@ -69,7 +69,7 @@ export default async function fetchPeople(workbook: string, sheetId: number): Pr
         
         // Row is valid, rename the "person" column to "name"
         const {person, ...rest} = row
-        validPeople.push({...rest, name: person})
+        validPeople.push({...rest, name: person, rowNumber})
         return validPeople
     }, [])
 

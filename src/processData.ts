@@ -1,4 +1,5 @@
 import {Filter, FilterPerson, Hierarchy, Person, Program} from "./types";
+import {SkippedRow} from "./api/fetchPeople";
 import {groupBy} from "lodash";
 
 function makeOrgHierarchy(people: Person[]): Hierarchy<Person>[] {
@@ -66,15 +67,44 @@ function groupByPrograms(people: FilterPerson[]) {
 
 export type ProcessedPeople = {
     byManager: Hierarchy<FilterPerson>[],
-    allPeople: FilterPerson[],
-    byProgram: Program[]
+    allPeople: Hierarchy<FilterPerson>[],
+    byProgram: Program[],
+    skippedRows: SkippedRow[]
 }
 
 export default function processData(people: Person[], filter: Filter): ProcessedPeople {
+    // Find people whose managers don't match any name or opening
+    const skippedRows: SkippedRow[] = [];
+    
+    // First, collect all names and openings from the dataset
+    const allNamesAndOpenings = new Set<string>();
+    people.forEach(person => {
+        if (person.name) allNamesAndOpenings.add(person.name);
+        if (person.opening) allNamesAndOpenings.add(person.opening);
+    });
+    
+    // Now check each person's manager against the collected names and openings
+    people.forEach(person => {
+        // Skip if person has no manager
+        if (!person.manager) {
+            return;
+        }
+        
+        // Check if the manager exists in the dataset
+        if (!allNamesAndOpenings.has(person.manager)) {
+            const {rowNumber, ...rowData} = person;
+            skippedRows.push({
+                rowData,
+                reason: `Manager "${person.manager}" does not match any Name or Opening in the dataset`,
+                rowNumber
+            });
+        }
+    });
+    
     const byManagerWithoutFilter = makeOrgHierarchy(people)
     const byManager = applyFilter(byManagerWithoutFilter, filter)
 
-    function flatten(person: Hierarchy<FilterPerson>): FilterPerson[] {
+    function flatten(person: Hierarchy<FilterPerson>): Hierarchy<FilterPerson>[] {
         return [person, ...person.members.flatMap(flatten)]
     }
     const allPeople = byManager.flatMap(flatten)
@@ -82,6 +112,7 @@ export default function processData(people: Person[], filter: Filter): Processed
     return {
         allPeople,
         byManager,
-        byProgram
+        byProgram,
+        skippedRows
     }
 }
