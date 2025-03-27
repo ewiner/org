@@ -31,7 +31,8 @@ export default function ChartPage({initialData, currentUrl, makeChartData}: Prop
     const { data, isValidating, mutate } = useSWR<PeopleData>(`/api/data/${encodeURIComponent(workbook)}/${encodeURIComponent(sheetId)}`, fetcher, {
         fallbackData: initialData,
     })
-    const {people, version, skippedRows = []} = data
+    // TODO: keep old data during refresh/mutate operation instead of letting it temporarily clear
+    const {people = [], version, skippedRows = []} = data
 
     const [filter, setFilter] = useState<Filter>(() => () => true)
     const peopleData = processData(people, filter)
